@@ -8,44 +8,19 @@ import {
 import Footer from "@/Components/UI/Footer/Footer";
 import Layout from "@/Components/UI/Layout/Layout";
 import reviewsData from "@/data/google-reviews.json";
-import { getPageUrl } from "@/site.config";
+import { buildMetadata } from "@/utils/seo";
 
-const PAGE_URL = getPageUrl("/get-free-quote");
-
-export async function generateMetadata(_props, parent) {
+export async function generateMetadata() {
   const data = await getSinglePostData("get-free-quote", "/wp-json/wp/v2/pages");
+  const page = Array.isArray(data) ? data[0] : null;
 
-  await parent;
-  if (Array.isArray(data) && data.length > 0) {
-    const seoData = data[0].yoast_head_json;
-    return {
-      title: seoData?.title,
-      description: seoData?.description,
-      metadataBase: new URL(process.env.siteUrl),
-      alternates: {
-        canonical: PAGE_URL,
-      },
-      openGraph: {
-        title: seoData?.title,
-        description: seoData?.description,
-        url: PAGE_URL,
-        siteName: process.env.siteName,
-        images: [
-          {
-            url: seoData?.og_image && seoData?.og_image[0]?.url,
-            width: 800,
-            height: 600,
-          },
-          {
-            url: seoData?.og_image && seoData?.og_image[0].url,
-            width: 1800,
-            height: 1600,
-          },
-        ],
-        type: "website",
-      },
-    };
-  }
+  return buildMetadata({
+    yoast: page?.yoast_head_json,
+    path: "/get-free-quote",
+    fallbackTitle: "Get a Free Autoglass Quote in Tauranga | AS Autoglass",
+    fallbackDescription:
+      "Request a free quote for windscreen replacement, chip repair, ADAS recalibration or headlight restoration in Tauranga.",
+  });
 }
 
 export default async function Home() {

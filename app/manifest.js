@@ -1,12 +1,13 @@
 export default function manifest() {
   return {
-    name: "Darmar Group",
-    short_name: "Darmar Group",
-    description: "Darmar Group — commercial cleaning and maintenance services in New Zealand.",
+    name: "AS Autoglass",
+    short_name: "AS Autoglass",
+    description:
+      "Mobile windscreen replacement, repair and ADAS recalibration in Tauranga.",
     start_url: "/",
     display: "standalone",
-    background_color: "#ffffff",
-    theme_color: "#017069",
+    background_color: "#0b130e",
+    theme_color: "#0b130e",
     icons: [
       {
         src: "/android-chrome-192x192.png",

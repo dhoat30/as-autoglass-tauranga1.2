@@ -30,6 +30,8 @@ import InsuranceSection from "./Sections/InsuranceSection/InsuranceSection";
 import GuaranteeSection from "./Sections/GuaranteeSection/GuaranteeSection";
 import GallerySection from "../Gallery/GallerySection";
 import { TAURANGA_SERVICE_LOCATIONS } from "@/utils/staticData/taurangaServiceLocations";
+import StructuredData from "@/Components/SEO/StructuredData";
+import { buildFaqSchema } from "@/utils/seo";
 
 const DEFAULT_TAURANGA_LOCATIONS_CONTENT = {
   title: "Mobile Windscreen Services Across Tauranga",
@@ -56,8 +58,8 @@ export default function Layout({
   serviceJobs,
   galleryData,
 }) {
-console.log(sections)
   if (!sections) return null;
+  const faqSchema = buildFaqSchema(sections);
   const sectionsJSX = sections.map((section, index) => {
     if (section.acf_fc_layout === "moving_card_form_section") {
       return (
@@ -474,10 +476,14 @@ if (section.acf_fc_layout === "landing_page_hero_section"  ) {
     }
 
     if (section.acf_fc_layout === "show_usp_table") {
-      console.log("usp table data", uspTable);
       return <UspTable key={index} uspTableData={uspTable} />;
     }
   });
 
-  return <section>{sectionsJSX} </section>;
+  return (
+    <section>
+      <StructuredData data={faqSchema} />
+      {sectionsJSX}
+    </section>
+  );
 }

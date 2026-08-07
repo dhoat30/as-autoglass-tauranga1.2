@@ -6,8 +6,10 @@ import PhotoCameraOutlinedIcon from "@mui/icons-material/PhotoCameraOutlined";
 import Container from "@mui/material/Container";
 import Link from "next/link";
 import ContactUsForm from "@/Components/UI/Contact/ContactUsForm";
+import StructuredData from "@/Components/SEO/StructuredData";
 import Header from "@/Components/UI/Header/Header";
 import { getPageUrl, siteName } from "@/site.config";
+import { getBusinessContact } from "@/utils/seo";
 import styles from "./page.module.scss";
 
 const PAGE_URL = getPageUrl("/contact-us");
@@ -27,10 +29,11 @@ export const metadata = {
 };
 
 export default function ContactUsPage() {
-  const phone = process.env.NEXT_PUBLIC_PHONE_NUMBER || "07 543 0009";
+  const contact = getBusinessContact();
+  const phone = contact.phone || "07 543 0009";
   const phoneUrl = `tel:${phone.replace(/[^\d+]/g, "")}`;
-  const email = process.env.NEXT_PUBLIC_EMAIL || "";
-  const address = process.env.NEXT_ADDRESS || "";
+  const email = contact.email;
+  const address = contact.address;
   const mapUrl = address
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`
     : "";
@@ -53,10 +56,7 @@ export default function ContactUsPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
+      <StructuredData data={schema} />
       <Header />
 
       <main className={styles.main}>

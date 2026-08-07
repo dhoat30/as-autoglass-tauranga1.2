@@ -7,43 +7,19 @@ import {
 } from "@/utils/fetchData";
 import Footer from "@/Components/UI/Footer/Footer";
 import GallerySection from "@/Components/UI/Gallery/GallerySection";
-import { getPageUrl } from "@/site.config";
+import { buildMetadata } from "@/utils/seo";
 
-const PAGE_URL = getPageUrl("/our-work/gallery");
-
-export async function generateMetadata(_props, parent) {
+export async function generateMetadata() {
   const data = await getSinglePostData("gallery", "/wp-json/wp/v2/pages");
+  const page = Array.isArray(data) ? data[0] : null;
 
-  if (Array.isArray(data) && data.length > 0) {
-    const seoData = data[0].yoast_head_json;
-    return {
-      title: seoData?.title,
-      description: seoData?.description,
-      metadataBase: new URL(process.env.siteUrl),
-      alternates: {
-        canonical: PAGE_URL,
-      },
-      openGraph: {
-        title: seoData?.title,
-        description: seoData?.description,
-        url: PAGE_URL,
-        siteName: process.env.siteName,
-        images: [
-          {
-            url: seoData?.og_image && seoData?.og_image[0]?.url,
-            width: 800,
-            height: 600,
-          },
-          {
-            url: seoData?.og_image && seoData?.og_image[0].url,
-            width: 1800,
-            height: 1600,
-          },
-        ],
-        type: "website",
-      },
-    };
-  }
+  return buildMetadata({
+    yoast: page?.yoast_head_json,
+    path: "/our-work/gallery",
+    fallbackTitle: "Our Autoglass Work in Tauranga | AS Autoglass",
+    fallbackDescription:
+      "See windscreen replacements, chip repairs, ADAS recalibrations and headlight restoration completed by AS Autoglass in Tauranga.",
+  });
 }
 
 export default async function Home() {

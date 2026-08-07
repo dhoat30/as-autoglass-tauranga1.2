@@ -6,6 +6,8 @@ import { Plus_Jakarta_Sans, Inter } from 'next/font/google'
 import Script from 'next/script';
 import ClientProvider from '@/Providers/ClientProvider';
 import { getPageUrl, siteName, siteUrl } from '@/site.config';
+import StructuredData from '@/Components/SEO/StructuredData';
+import { getBusinessContact } from '@/utils/seo';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -23,15 +25,39 @@ const inter = Inter({
   preload: true
 })
 
-const organizationSchema = {
+export const metadata = {
+  metadataBase: new URL(siteUrl),
+  title: `Windscreen Repair & Replacement Tauranga | ${siteName}`,
+  description:
+    'Mobile windscreen replacement, chip repair, ADAS recalibration and headlight restoration from a local Tauranga autoglass team.',
+  openGraph: {
+    siteName,
+    locale: 'en_NZ',
+    type: 'website',
+  },
+  twitter: { card: 'summary_large_image' },
+  formatDetection: { email: false, address: false, telephone: false },
+};
+
+const contact = getBusinessContact();
+const businessSchema = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': 'AutoRepair',
+  '@id': `${siteUrl}/#business`,
   name: siteName,
   url: siteUrl,
+  ...(contact.phone ? { telephone: contact.phone } : {}),
+  ...(contact.email ? { email: contact.email } : {}),
+  ...(contact.address ? { address: contact.address } : {}),
+  areaServed: [
+    { '@type': 'City', name: 'Tauranga' },
+    { '@type': 'AdministrativeArea', name: 'Western Bay of Plenty' },
+  ],
   logo: {
     '@type': 'ImageObject',
     url: getPageUrl('/logo.png'),
   },
+  image: getPageUrl('/logo.png'),
 }
 
 const hubspotPortalId = String(process.env.HUBSPOT_PORTAL_ID || '').replace(/\D/g, '');
@@ -40,10 +66,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en-NZ" >
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-        />
+        <StructuredData data={businessSchema} />
       </head>
       <body className={`${plusJakartaSans.variable} ${inter.variable}`}>
         <ClientProvider>

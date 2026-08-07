@@ -32,7 +32,8 @@ export default function Footer({
   const phone = process.env.NEXT_PUBLIC_PHONE_NUMBER || "07 543 0009";
   const phoneUrl = `tel:${phone.replace(/[^\d+]/g, "")}`;
   const email = process.env.NEXT_PUBLIC_EMAIL || "";
-  const address = process.env.NEXT_ADDRESS || "";
+  const address =
+    process.env.NEXT_PUBLIC_ADDRESS || process.env.NEXT_ADDRESS || "";
   const mapUrl = address
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`
     : "";

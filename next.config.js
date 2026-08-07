@@ -17,8 +17,8 @@ const nextConfig = {
 
 
         remotePatterns: [{
-            protocol: 'http',
-            hostname: 'as-autoglass.local',
+            protocol: 'https',
+            hostname: 'cms.asautoglass.co.nz',
             port: '',
             pathname: '/**',
         },
@@ -38,7 +38,7 @@ const nextConfig = {
     ],
     },
     env: {
-        url: "http://as-autoglass.local",
+        url: "https://cms.asautoglass.co.nz",
         siteUrl: siteUrl,
         siteName: siteName,
     },

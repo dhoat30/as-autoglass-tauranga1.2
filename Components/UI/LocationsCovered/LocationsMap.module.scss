@@ -55,7 +55,7 @@
   }
 }
 
-:global(.leaflet-tooltip) {
+.mapFrame :global(.leaflet-tooltip) {
   padding: 6px 9px;
   border: 1px solid rgba(246, 185, 26, 0.35);
   border-radius: 6px;
@@ -67,6 +67,6 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
-:global(.leaflet-tooltip-top::before) {
+.mapFrame :global(.leaflet-tooltip-top::before) {
   border-top-color: #101713;
 }

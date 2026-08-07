@@ -5,8 +5,10 @@ import Layout from "@/Components/UI/Layout/Layout";
 import reviewsData from "@/data/google-reviews.json";
 import { getOptions, getSinglePostData } from "@/utils/fetchData";
 import { getPageUrl, siteName, siteUrl } from "@/site.config";
+import StructuredData from "@/Components/SEO/StructuredData";
+import { buildMetadata, plainText } from "@/utils/seo";
 
-export const revalidate = 60 * 60 * 24 * 30;
+export const revalidate = 2592000;
 export const dynamicParams = true;
 
 const SERVICE_API_ROUTE = "wp-json/wp/v2/service";
@@ -15,17 +17,6 @@ const VALID_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 function getSlug(params) {
   const slug = String(params?.slug || "").toLowerCase();
   return VALID_SLUG.test(slug) ? slug : null;
-}
-
-function plainText(value = "") {
-  return String(value)
-    .replace(/<[^>]*>/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&#8217;|&rsquo;/g, "’")
-    .replace(/&#8211;|&ndash;/g, "–")
-    .replace(/&quot;/g, '"')
-    .replace(/\s+/g, " ")
-    .trim();
 }
 
 async function getService(slug) {
@@ -52,32 +43,13 @@ export async function generateMetadata({ params }) {
   const description =
     seo.description || plainText(service.excerpt?.rendered) ||
     `Professional ${plainText(service.title?.rendered).toLowerCase()} from ${siteName}.`;
-  const pageUrl = getPageUrl(`/services/${slug}`);
-  const images = Array.isArray(seo.og_image)
-    ? seo.og_image
-        .filter((image) => image?.url)
-        .map((image) => ({
-          url: image.url,
-          width: image.width,
-          height: image.height,
-          alt: image.alt || title,
-        }))
-    : [];
 
-  return {
-    title,
-    description,
-    metadataBase: new URL(siteUrl),
-    alternates: { canonical: pageUrl },
-    openGraph: {
-      title: seo.og_title || title,
-      description: seo.og_description || description,
-      url: pageUrl,
-      siteName,
-      images,
-      type: "website",
-    },
-  };
+  return buildMetadata({
+    yoast: seo,
+    path: `/services/${slug}`,
+    fallbackTitle: title,
+    fallbackDescription: description,
+  });
 }
 
 export default async function ServicePage({ params }) {
@@ -105,9 +77,9 @@ export default async function ServicePage({ params }) {
     url: pageUrl,
     provider: {
       "@type": "AutoRepair",
+      "@id": `${siteUrl}/#business`,
       name: siteName,
       url: siteUrl,
-      telephone: process.env.NEXT_PUBLIC_PHONE_NUMBER,
     },
     areaServed: [
       { "@type": "City", name: "Tauranga" },
@@ -117,10 +89,7 @@ export default async function ServicePage({ params }) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
-      />
+      <StructuredData data={serviceSchema} />
       <Header />
       <main>
         <Layout

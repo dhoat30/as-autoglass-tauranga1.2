@@ -60,14 +60,18 @@ export const getSinglePostDataWithID = async (id, apiRoute) => {
 };
 
 //get all posts
-export const getAllPosts = async (apiRoute) => {
+export const getAllPosts = async (apiRoute, query = {}) => {
   try {
-    let response = await fetch(
-      `${process.env.url}/${apiRoute}?acf_format=standard&per_page=100`,
-      {
-        ...getCmsCacheOptions(),
-      },
-    );
+    const endpoint = new URL(`${process.env.url}/${String(apiRoute).replace(/^\/+/, "")}`);
+    endpoint.searchParams.set("acf_format", "standard");
+    endpoint.searchParams.set("per_page", "100");
+    Object.entries(query).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        endpoint.searchParams.set(key, String(value));
+      }
+    });
+
+    let response = await fetch(endpoint, getCmsCacheOptions());
 
     if (!response.ok) {
       throw new Error(`Fetch failed with status: ${response.status}`);
