@@ -7,16 +7,19 @@ import Container from "@mui/material/Container";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
+import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { headerLinks } from "@/utils/headerLinks";
 import styles from "./Header.module.scss";
+
+const PHONE = process.env.NEXT_PUBLIC_PHONE_NUMBER || "07 543 0009";
+const PHONE_URL = `tel:${PHONE.replace(/[^\d+]/g, "")}`;
 
 export default function Header() {
   const pathname = usePathname();
@@ -26,7 +29,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 0);
+    const handleScroll = () => setIsScrolled(window.scrollY > 8);
 
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -40,9 +43,22 @@ export default function Header() {
     setMobileMenu(null);
   }, [pathname]);
 
+  useEffect(() => {
+    if (!desktopMenu) return undefined;
+
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setDesktopMenu(null);
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [desktopMenu]);
+
+  const isCurrent = (url) => pathname === url;
   const isActive = (item) =>
-    pathname === item.url ||
-    item.subLinks?.some((subLink) => pathname === subLink.url);
+    isCurrent(item.url) ||
+    item.subLinks?.some((subLink) => isCurrent(subLink.url));
 
   const closeDrawer = () => {
     setDrawerOpen(false);
@@ -53,23 +69,23 @@ export default function Header() {
     <>
       <AppBar
         position="fixed"
-        elevation={isScrolled ? 4 : 0}
-        className={styles.header}
+        elevation={0}
+        className={`${styles.header} ${isScrolled ? styles.headerScrolled : ""}`}
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters className={styles.toolbar}>
             <Link href="/" className={styles.logoLink} aria-label="AS Autoglass home">
               <Image
                 src="/logo.png"
-                width={52}
-                height={52}
+                width={48}
+                height={48}
                 alt=""
                 className={styles.logo}
                 priority
               />
-              {/* <span className={styles.brandName}>
+              <span className={styles.brandName}>
                 AS <strong>Autoglass</strong>
-              </span> */}
+              </span>
             </Link>
 
             <nav className={styles.desktopNavigation} aria-label="Main navigation">
@@ -77,29 +93,29 @@ export default function Header() {
                 {headerLinks.map((item, index) => {
                   const isOpen = desktopMenu === item.url;
                   const hasSubLinks = Boolean(item.subLinks?.length);
+                  const linkClass = `${styles.desktopLink} ${
+                    isActive(item) ? styles.active : ""
+                  }`;
 
                   return (
                     <li
                       className={styles.desktopItem}
-                      key={`${item.id}-${item.url}`}
+                      key={item.id}
                       onMouseEnter={() => hasSubLinks && setDesktopMenu(item.url)}
                       onMouseLeave={() => hasSubLinks && setDesktopMenu(null)}
                     >
                       {hasSubLinks ? (
                         <button
                           type="button"
-                          className={`${styles.desktopLink} ${
-                            isActive(item) ? styles.active : ""
-                          }`}
+                          className={linkClass}
+                          aria-haspopup="true"
                           aria-expanded={isOpen}
                           aria-controls={`desktop-submenu-${index}`}
                           onClick={() =>
                             setDesktopMenu(isOpen ? null : item.url)
                           }
                         >
-                          <Typography component="span" variant="body1">
-                            {item.label}
-                          </Typography>
+                          <span>{item.label}</span>
                           <KeyboardArrowDownRoundedIcon
                             className={`${styles.arrow} ${
                               isOpen ? styles.arrowOpen : ""
@@ -109,81 +125,103 @@ export default function Header() {
                       ) : (
                         <Link
                           href={item.url}
-                          className={`${styles.desktopLink} ${
-                            isActive(item) ? styles.active : ""
-                          }`}
+                          className={linkClass}
+                          aria-current={isCurrent(item.url) ? "page" : undefined}
                         >
-                          <Typography component="span" variant="body1">
-                            {item.label}
-                          </Typography>
+                          <span>{item.label}</span>
                         </Link>
                       )}
 
                       {hasSubLinks && (
-                        <ul
-                          id={`desktop-submenu-${index}`}
-                          className={`${styles.desktopSubmenu} ${
-                            isOpen ? styles.desktopSubmenuOpen : ""
+                        <div
+                          className={`${styles.submenuWrapper} ${
+                            isOpen ? styles.submenuWrapperOpen : ""
                           }`}
                         >
-                          {item.subLinks.map((subLink) => (
-                            <li key={subLink.url}>
-                              <Link
-                                href={subLink.url}
-                                className={styles.submenuLink}
-                                onClick={() => setDesktopMenu(null)}
-                              >
-                                {subLink.graphic && (
-                                  <Image
-                                    className={styles.submenuIcon}
-                                    src={subLink.graphic}
-                                    alt=""
-                                    width={48}
-                                    height={48}
-                                  />
-                                )}
-                                <span className={styles.submenuLabel}>
-                                  <Typography component="span" variant="subtitle1">
-                                    {subLink.label}
-                                  </Typography>
-                                  {subLink.subtitle && (
-                                    <Typography component="span" variant="body2">
-                                      {subLink.subtitle}
-                                    </Typography>
+                          <ul
+                            id={`desktop-submenu-${index}`}
+                            className={styles.desktopSubmenu}
+                          >
+                            {item.subLinks.map((subLink) => (
+                              <li key={subLink.url}>
+                                <Link
+                                  href={subLink.url}
+                                  className={`${styles.submenuLink} ${
+                                    isCurrent(subLink.url)
+                                      ? styles.submenuLinkActive
+                                      : ""
+                                  }`}
+                                  aria-current={
+                                    isCurrent(subLink.url) ? "page" : undefined
+                                  }
+                                  onClick={() => setDesktopMenu(null)}
+                                >
+                                  {subLink.graphic && (
+                                    <Image
+                                      className={styles.submenuIcon}
+                                      src={subLink.graphic}
+                                      alt=""
+                                      width={48}
+                                      height={48}
+                                    />
                                   )}
-                                </span>
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
+                                  <span className={styles.submenuLabel}>
+                                    <strong>{subLink.label}</strong>
+                                    {subLink.subtitle && (
+                                      <small>{subLink.subtitle}</small>
+                                    )}
+                                  </span>
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       )}
                     </li>
                   );
                 })}
               </ul>
 
-              <Button
-                component={Link}
-                href="/book-now"
-                size="large"
-                variant="contained"
-                endIcon={<ArrowForwardIcon />}
-                className={styles.quoteButton}
-              >
-                Book Now
-              </Button>
+              <div className={styles.actions}>
+                <a href={PHONE_URL} className={styles.phoneLink}>
+                  <LocalPhoneOutlinedIcon aria-hidden="true" />
+                  <span className={styles.phoneText}>
+                    <small>Call us today</small>
+                    <strong>{PHONE}</strong>
+                  </span>
+                </a>
+
+                <Button
+                  component={Link}
+                  href="/book-now"
+                  variant="contained"
+                  endIcon={<ArrowForwardIcon />}
+                  className={styles.quoteButton}
+                >
+                  Book Now
+                </Button>
+              </div>
             </nav>
 
-            <IconButton
-              className={styles.menuButton}
-              aria-label="Open navigation menu"
-              aria-controls="mobile-navigation"
-              aria-expanded={drawerOpen}
-              onClick={() => setDrawerOpen(true)}
-              color="primary"
-            >
-              <MenuRoundedIcon fontSize="large" />
-            </IconButton>
+            <div className={styles.mobileActions}>
+              <IconButton
+                component="a"
+                href={PHONE_URL}
+                className={styles.mobilePhoneButton}
+                aria-label={`Call AS Autoglass on ${PHONE}`}
+              >
+                <LocalPhoneOutlinedIcon />
+              </IconButton>
+              <IconButton
+                className={styles.menuButton}
+                aria-label="Open navigation menu"
+                aria-controls="mobile-navigation"
+                aria-expanded={drawerOpen}
+                onClick={() => setDrawerOpen(true)}
+              >
+                <MenuRoundedIcon fontSize="large" />
+              </IconButton>
+            </div>
           </Toolbar>
         </Container>
       </AppBar>
@@ -199,7 +237,7 @@ export default function Header() {
       >
         <div className={styles.drawerHeader}>
           <Link href="/" className={styles.drawerLogo} onClick={closeDrawer}>
-            <Image src="/logo.png" width={48} height={48} alt="" />
+            <Image src="/logo.png" width={44} height={44} alt="" />
             <span className={styles.brandName}>
               AS <strong>Autoglass</strong>
             </span>
@@ -209,14 +247,14 @@ export default function Header() {
           </IconButton>
         </div>
 
-        <nav aria-label="Mobile navigation">
+        <nav aria-label="Mobile navigation" className={styles.drawerNav}>
           <ul className={styles.mobileList}>
             {headerLinks.map((item, index) => {
               const isOpen = mobileMenu === item.url;
               const hasSubLinks = Boolean(item.subLinks?.length);
 
               return (
-                <li className={styles.mobileItem} key={`${item.id}-${item.url}`}>
+                <li className={styles.mobileItem} key={item.id}>
                   {hasSubLinks ? (
                     <button
                       type="button"
@@ -240,9 +278,10 @@ export default function Header() {
                       className={`${styles.mobileLink} ${
                         isActive(item) ? styles.mobileActive : ""
                       }`}
+                      aria-current={isCurrent(item.url) ? "page" : undefined}
                       onClick={closeDrawer}
                     >
-                      {item.label}
+                      <span>{item.label}</span>
                     </Link>
                   )}
 
@@ -253,7 +292,18 @@ export default function Header() {
                     >
                       {item.subLinks.map((subLink) => (
                         <li key={subLink.url}>
-                          <Link href={subLink.url} onClick={closeDrawer}>
+                          <Link
+                            href={subLink.url}
+                            className={
+                              isCurrent(subLink.url)
+                                ? styles.mobileSubmenuActive
+                                : undefined
+                            }
+                            aria-current={
+                              isCurrent(subLink.url) ? "page" : undefined
+                            }
+                            onClick={closeDrawer}
+                          >
                             {subLink.graphic && (
                               <Image
                                 src={subLink.graphic}
@@ -264,13 +314,9 @@ export default function Header() {
                               />
                             )}
                             <span className={styles.submenuLabel}>
-                              <Typography component="span" variant="subtitle1">
-                                {subLink.label}
-                              </Typography>
+                              <strong>{subLink.label}</strong>
                               {subLink.subtitle && (
-                                <Typography component="span" variant="body2">
-                                  {subLink.subtitle}
-                                </Typography>
+                                <small>{subLink.subtitle}</small>
                               )}
                             </span>
                           </Link>
@@ -284,16 +330,24 @@ export default function Header() {
           </ul>
         </nav>
 
-        <Button
-          component={Link}
-          href="/book-now"
-          variant="contained"
-          endIcon={<ArrowForwardIcon />}
-          className={styles.mobileQuoteButton}
-          onClick={closeDrawer}
-        >
-          Book Now
-        </Button>
+        <div className={styles.drawerFooter}>
+          <Button
+            component={Link}
+            href="/book-now"
+            variant="contained"
+            endIcon={<ArrowForwardIcon />}
+            className={styles.mobileQuoteButton}
+            onClick={closeDrawer}
+          >
+            Book Now
+          </Button>
+          <a href={PHONE_URL} className={styles.drawerPhoneLink}>
+            <LocalPhoneOutlinedIcon aria-hidden="true" />
+            <span>
+              Prefer to talk? <strong>{PHONE}</strong>
+            </span>
+          </a>
+        </div>
       </Drawer>
     </>
   );

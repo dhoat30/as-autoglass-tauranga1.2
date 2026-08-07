@@ -46,9 +46,34 @@ const businessSchema = {
   '@id': `${siteUrl}/#business`,
   name: siteName,
   url: siteUrl,
-  ...(contact.phone ? { telephone: contact.phone } : {}),
+  ...(contact.phone
+    ? { telephone: contact.phone.replace(/^0/, '+64 ') }
+    : {}),
   ...(contact.email ? { email: contact.email } : {}),
-  ...(contact.address ? { address: contact.address } : {}),
+  // Keep in sync with NEXT_PUBLIC_ADDRESS and the Google Business Profile
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '64A Maleme Street',
+    addressLocality: 'Greerton, Tauranga',
+    addressRegion: 'Bay of Plenty',
+    postalCode: '3112',
+    addressCountry: 'NZ',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: -37.736226,
+    longitude: 176.1331051,
+  },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '17:00',
+    },
+  ],
+  hasMap:
+    'https://www.google.com/maps/search/?api=1&query=AS+Autoglass&query_place_id=ChIJY50pNgDbbW0RmcpNo9zP2fI',
   areaServed: [
     { '@type': 'City', name: 'Tauranga' },
     { '@type': 'AdministrativeArea', name: 'Western Bay of Plenty' },

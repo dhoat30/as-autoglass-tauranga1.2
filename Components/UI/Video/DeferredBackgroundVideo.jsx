@@ -20,9 +20,21 @@ export default function DeferredBackgroundVideo({
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
       ).matches;
-      const prefersReducedData = navigator.connection?.saveData === true;
+      const connection = navigator.connection;
+      const prefersReducedData = connection?.saveData === true;
+      const onSlowConnection = /(^|-)[23]g$/.test(connection?.effectiveType || "");
+      // Autoplay forces a full download regardless of preload="metadata", so the
+      // poster alone has to serve anyone we can't afford to send the video to.
+      const isSmallScreen = window.matchMedia("(max-width: 900px)").matches;
 
-      if (prefersReducedMotion || prefersReducedData) return;
+      if (
+        prefersReducedMotion ||
+        prefersReducedData ||
+        onSlowConnection ||
+        isSmallScreen
+      ) {
+        return;
+      }
 
       if ("requestIdleCallback" in window) {
         idleId = window.requestIdleCallback(

@@ -82,7 +82,7 @@ const selectSx = {
 };
 
 function getPhotoError(file) {
-  if (!file) return "Please add a clear photo of the vehicle or damage.";
+  if (!file) return "";
   if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
     return "Use a JPG, PNG, WebP, HEIC or HEIF image.";
   }
@@ -215,7 +215,7 @@ export default function SendPhotoForm({
     setTouched((current) => ({ ...current, windscreen_photo: true }));
     setErrors((current) => ({
       ...current,
-      windscreen_photo: "Please add a clear photo of the vehicle or damage.",
+      windscreen_photo: "",
     }));
   };
 
@@ -431,7 +431,9 @@ export default function SendPhotoForm({
         <FormControl
           error={Boolean(touched.windscreen_photo && errors.windscreen_photo)}
         >
-          <span className={styles.uploadLabel}>Photo of the damage or vehicle *</span>
+          <span className={styles.uploadLabel}>
+            Photo of the damage or vehicle (optional)
+          </span>
           {previewUrl ? (
             <div className={styles.preview}>
               <img src={previewUrl} alt="Selected vehicle damage" />

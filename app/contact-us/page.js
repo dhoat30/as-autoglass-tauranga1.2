@@ -9,7 +9,7 @@ import ContactUsForm from "@/Components/UI/Contact/ContactUsForm";
 import StructuredData from "@/Components/SEO/StructuredData";
 import Header from "@/Components/UI/Header/Header";
 import { getPageUrl, siteName } from "@/site.config";
-import { getBusinessContact } from "@/utils/seo";
+import { DEFAULT_OG_IMAGE, getBusinessContact } from "@/utils/seo";
 import styles from "./page.module.scss";
 
 const PAGE_URL = getPageUrl("/contact-us");
@@ -25,6 +25,7 @@ export const metadata = {
       "Talk to a local technician about your windscreen, vehicle glass, camera recalibration, or headlight restoration.",
     url: PAGE_URL,
     type: "website",
+    images: [DEFAULT_OG_IMAGE],
   },
 };
 

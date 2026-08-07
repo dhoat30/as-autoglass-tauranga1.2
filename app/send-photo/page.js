@@ -9,6 +9,7 @@ import SendPhotoForm from "@/Components/UI/SendPhoto/SendPhotoForm";
 import reviewsData from "@/data/google-reviews.json";
 import { getPageUrl, siteName } from "@/site.config";
 import { getOptions } from "@/utils/fetchData";
+import { DEFAULT_OG_IMAGE } from "@/utils/seo";
 import styles from "./page.module.scss";
 
 const PAGE_URL = getPageUrl("/send-photo");
@@ -24,6 +25,7 @@ export const metadata = {
       "A quick photo is often all we need to recommend the right service and prepare your free quote.",
     url: PAGE_URL,
     type: "website",
+    images: [DEFAULT_OG_IMAGE],
   },
 };
 

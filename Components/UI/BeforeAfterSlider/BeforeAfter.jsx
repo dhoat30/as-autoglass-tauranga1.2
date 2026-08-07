@@ -3,7 +3,9 @@ import Image from "next/image";
 import React from "react";
 import { ReactCompareSlider } from "react-compare-slider";
 import styles from "./BeforeAfter.module.scss";
-export default function BeforeAfter({ data, showTitle }) {
+// `priority` is opt-in: this renders two images per instance and appears in
+// several mid-page sections, so preloading by default floods the critical path.
+export default function BeforeAfter({ data, showTitle, priority = false }) {
   const [position, setPosition] = React.useState(50);
 
   if (!data.afterImage || !data.beforeImage) return null;
@@ -36,7 +38,7 @@ export default function BeforeAfter({ data, showTitle }) {
               alt={data.beforeImage.alt ? data.beforeImage.alt : "Before image"}
               sizes="(max-width: 1200px) 100vw, 50vw"
               fill
-              priority
+              priority={priority}
             />
           }
           itemTwo={
@@ -44,7 +46,7 @@ export default function BeforeAfter({ data, showTitle }) {
               src={data.afterImage.url}
               alt={data.afterImage.alt ? data.afterImage.alt : "After Image"}
               fill
-              priority
+              priority={priority}
               sizes="(max-width: 1200px) 100vw, 50vw"
             />
           }

@@ -9,6 +9,7 @@ import SendPhotoForm from "@/Components/UI/SendPhoto/SendPhotoForm";
 import reviewsData from "@/data/google-reviews.json";
 import { getPageUrl, siteName } from "@/site.config";
 import { getOptions } from "@/utils/fetchData";
+import { DEFAULT_OG_IMAGE } from "@/utils/seo";
 import styles from "../send-photo/page.module.scss";
 
 const PAGE_URL = getPageUrl("/book-now");
@@ -24,6 +25,7 @@ export const metadata = {
       "Choose a preferred time and send us the details. Our Tauranga team will confirm your booking directly.",
     url: PAGE_URL,
     type: "website",
+    images: [DEFAULT_OG_IMAGE],
   },
 };
 

@@ -280,7 +280,6 @@ export default function GallerySection({
                 index
               }
               item={item}
-              priority={index < 4}
               onOpen={setLightboxItem}
             />
           ))}

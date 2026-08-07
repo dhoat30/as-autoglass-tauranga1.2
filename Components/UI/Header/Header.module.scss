@@ -1,54 +1,113 @@
+/* Plain elements inherit the browser default (serif) unless told otherwise —
+   the AppBar and the portalled Drawer each need this set at their root. */
+$font-body: var(--font-work-sans), "Segoe UI", sans-serif;
+
 .header {
+  --header-height: 76px;
+  --nav-pad: 14px;
+  --header-surface: 14, 21, 17;
+
+  font-family: $font-body;
   z-index: 1200 !important;
   color: var(--light-on-surface) !important;
-  background-color: var(--light-surface-container-low) !important;
+  background-color: rgb(var(--header-surface)) !important;
   background-image: none !important;
-  border-bottom: 1px solid var(--light-outline-variant);
+  border-bottom: 1px solid transparent;
+  box-shadow: none !important;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease;
+
+  @supports (backdrop-filter: blur(12px)) {
+    background-color: rgba(var(--header-surface), 0.86) !important;
+    backdrop-filter: blur(14px) saturate(140%);
+  }
+}
+
+.headerScrolled {
+  --header-height: 64px;
+
+  border-bottom-color: var(--light-outline-variant);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
+
+  @supports (backdrop-filter: blur(12px)) {
+    background-color: rgba(var(--header-surface), 0.94) !important;
+  }
 }
 
 .toolbar {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  min-height: 72px !important;
-  gap: 32px;
+  min-height: var(--header-height) !important;
+  gap: 24px;
+  transition: min-height 0.25s ease;
 }
+
+/* ---------- Brand ---------- */
 
 .logoLink {
   display: flex;
   flex: 0 0 auto;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   line-height: 0;
+  border-radius: 10px;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--brand-kowhai);
+    outline-offset: 4px;
+  }
 }
 
 .logo {
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
+  transition: width 0.25s ease, height 0.25s ease;
+
+  .headerScrolled & {
+    width: 42px;
+    height: 42px;
+  }
 }
 
 .brandName {
   color: var(--light-on-surface);
   font-family: var(--font-prompt), sans-serif;
-  font-size: 1.05rem;
+  font-size: 1.06rem;
   font-weight: 800;
   line-height: 1;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
+  white-space: nowrap;
 
   strong {
     color: var(--light-primary);
     font-weight: inherit;
   }
+
+  /* Only hidden in the band where the desktop nav is still shown but cramped. */
+  @media (min-width: 1024px) and (max-width: 1160px) {
+    display: none;
+  }
 }
+
+/* ---------- Desktop navigation ---------- */
 
 .desktopNavigation {
   display: none;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
   margin-left: auto;
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1024px) {
     display: flex;
   }
 }
@@ -56,6 +115,7 @@
 .desktopList {
   display: flex;
   align-items: center;
+  gap: 2px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -69,31 +129,52 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 4px;
-  min-height: 64px;
-  padding: 16px;
-  color: var(--light-on-surface);
+  gap: 2px;
+  padding: 10px var(--nav-pad);
+  color: var(--light-on-surface-variant);
+  font-family: inherit;
+  font-size: 0.95rem;
   background: transparent;
   border: 0;
+  border-radius: 10px;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
 
   span {
     font-weight: 600;
     white-space: nowrap;
   }
 
-  &:hover,
+  &:hover {
+    color: var(--light-on-surface);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
   &:focus-visible {
-    color: var(--light-primary);
+    outline: 2px solid var(--brand-kowhai);
+    outline-offset: 2px;
   }
 
-  @media (max-width: 1366px) {
-    padding-inline: 12px;
+  &::after {
+    content: "";
+    position: absolute;
+    right: var(--nav-pad);
+    bottom: 2px;
+    left: var(--nav-pad);
+    height: 2px;
+    background: var(--brand-kowhai);
+    border-radius: 999px;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.25s ease;
   }
 
-  @media (max-width: 1280px) {
-    padding-inline: 8px;
+  @media (max-width: 1240px) {
+    --nav-pad: 10px;
+
+    font-size: 0.9rem;
   }
 }
 
@@ -101,19 +182,13 @@
   color: var(--light-primary);
 
   &::after {
-    content: "";
-    position: absolute;
-    right: 12px;
-    bottom: 9px;
-    left: 12px;
-    height: 2px;
-    background: var(--light-primary);
-    border-radius: 999px;
+    transform: scaleX(1);
   }
 }
 
 .arrow {
   flex: 0 0 auto;
+  font-size: 1.15rem !important;
   transition: transform 0.2s ease;
 }
 
@@ -121,37 +196,103 @@
   transform: rotate(180deg);
 }
 
-.quoteButton {
-  white-space: nowrap;
-  color: var(--light-on-primary) !important;
-  background: var(--brand-kowhai) !important;
+/* ---------- Right-hand actions ---------- */
+
+.actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 14px;
+}
+
+.phoneLink {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 12px 6px 8px;
+  color: var(--light-on-surface);
+  border-radius: 10px;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+
+  svg {
+    flex: 0 0 auto;
+    font-size: 1.3rem;
+    color: var(--brand-kowhai);
+  }
 
   &:hover {
-    background: var(--brand-kowhai-bright) !important;
+    color: var(--brand-kowhai);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--brand-kowhai);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 1320px) {
+    display: none;
   }
 }
 
-.desktopSubmenu {
+.phoneText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  line-height: 1.15;
+
+  small {
+    color: var(--light-on-surface-variant);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  strong {
+    font-size: 0.98rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+}
+
+.quoteButton {
+  padding: 10px 22px !important;
+  color: var(--light-on-primary) !important;
+  font-weight: 700 !important;
+  white-space: nowrap;
+  background: var(--brand-kowhai) !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease !important;
+
+  &:hover {
+    background: var(--brand-kowhai-bright) !important;
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--light-on-surface);
+    outline-offset: 3px;
+  }
+}
+
+/* ---------- Desktop dropdown ---------- */
+
+.submenuWrapper {
   position: absolute;
-  top: calc(100% - 4px);
-  left: -16px;
+  top: 100%;
+  left: 50%;
   z-index: 10;
-  display: grid;
-  width: max-content;
-  max-width: 420px;
-  max-height: 80vh;
-  gap: 8px;
-  margin: 0;
-  padding: 12px;
-  overflow: auto;
-  list-style: none;
-  background: var(--light-surface-container-lowest);
-  border: 1px solid var(--light-outline-variant);
-  border-radius: 12px;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.14);
+  padding-top: 14px;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-8px);
+  transform: translate(-50%, -6px);
   pointer-events: none;
   transition:
     opacity 0.2s ease,
@@ -159,28 +300,56 @@
     visibility 0.2s ease;
 }
 
-.desktopSubmenuOpen {
+.submenuWrapperOpen {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translate(-50%, 0);
   pointer-events: auto;
 }
 
-.submenuLink {
+.desktopSubmenu {
   display: grid;
-  grid-template-columns: 48px minmax(160px, auto);
-  align-items: center;
-  gap: 10px;
+  width: max-content;
+  max-width: 340px;
+  gap: 2px;
+  margin: 0;
   padding: 8px;
-  border-radius: 8px;
+  list-style: none;
+  background: var(--light-surface-container-high);
+  border: 1px solid var(--light-outline-variant);
+  border-radius: 14px;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.45);
+}
+
+.submenuLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  transition: background-color 0.18s ease;
 
   &:hover {
-    background: var(--light-surface-container);
+    background: var(--light-surface-container-highest);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--brand-kowhai);
+    outline-offset: -2px;
+  }
+}
+
+.submenuLinkActive {
+  background: rgba(246, 185, 26, 0.1);
+
+  .submenuLabel strong {
+    color: var(--brand-kowhai);
   }
 }
 
 .submenuIcon,
 .mobileSubmenuIcon {
+  flex: 0 0 auto;
   padding: 6px;
   object-fit: contain;
   border: 1px solid var(--light-outline-variant);
@@ -190,36 +359,80 @@
 .submenuLabel {
   display: flex;
   flex-direction: column;
+  gap: 2px;
   color: var(--light-on-surface);
-}
 
-.menuButton {
-  margin-left: auto !important;
+  strong {
+    font-size: 0.94rem;
+    font-weight: 600;
+    line-height: 1.25;
+    transition: color 0.18s ease;
+  }
 
-  @media (min-width: 1200px) {
-    display: none !important;
+  small {
+    color: var(--light-on-surface-variant);
+    font-size: 0.79rem;
+    line-height: 1.35;
   }
 }
 
+/* ---------- Mobile trigger ---------- */
+
+.mobileActions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+
+.mobilePhoneButton,
+.menuButton {
+  color: var(--light-on-surface) !important;
+
+  &:focus-visible {
+    outline: 2px solid var(--brand-kowhai);
+    outline-offset: -2px;
+  }
+}
+
+.mobilePhoneButton {
+  color: var(--brand-kowhai) !important;
+}
+
+/* ---------- Mobile drawer ---------- */
+
 .drawer {
-  @media (min-width: 1200px) {
+  @media (min-width: 1024px) {
     display: none;
   }
 }
 
 .drawerPaper {
-  width: min(92vw, 500px);
+  display: flex;
+  flex-direction: column;
+  width: min(92vw, 420px);
+  font-family: $font-body;
   color: var(--light-on-surface) !important;
   background: var(--light-surface-container-low) !important;
+  background-image: none !important;
 }
 
 .drawerHeader {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
-  min-height: 72px;
-  padding: 8px 16px;
+  min-height: 76px;
+  padding: 8px 20px;
   border-bottom: 1px solid var(--light-outline-variant);
+
+  .brandName {
+    display: block;
+  }
 }
 
 .drawerLogo {
@@ -228,36 +441,48 @@
   gap: 10px;
 
   img {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     object-fit: contain;
   }
 }
 
+.drawerNav {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
 .mobileList {
   margin: 0;
-  padding: 8px 16px 0;
+  padding: 8px 20px 0;
   list-style: none;
 }
 
-.mobileItem {
-  border-bottom: 1px solid var(--light-outline-variant);
+.mobileItem + .mobileItem {
+  border-top: 1px solid var(--light-outline-variant);
 }
 
 .mobileLink {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   width: 100%;
-  min-height: 60px;
-  padding: 12px 4px;
+  min-height: 56px;
+  padding: 12px 2px;
   color: var(--light-on-surface);
-  background: transparent;
-  border: 0;
+  font-family: inherit;
   font-size: 1rem;
   font-weight: 600;
   text-align: left;
+  background: transparent;
+  border: 0;
   cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--brand-kowhai);
+    outline-offset: -2px;
+  }
 }
 
 .mobileActive {
@@ -266,50 +491,125 @@
 
 .mobileSubmenu {
   display: grid;
-  gap: 4px;
+  gap: 2px;
   margin: 0 0 12px;
-  padding: 0 0 0 12px;
+  padding: 0;
   list-style: none;
 
   a {
-    display: grid;
-    grid-template-columns: 40px 1fr;
+    display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 4px;
-    border-radius: 8px;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--light-surface-container);
+    border-radius: 10px;
 
     &:hover {
-      background: var(--light-surface-container);
+      background: var(--light-surface-container-high);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--brand-kowhai);
+      outline-offset: -2px;
     }
   }
 }
 
+.mobileSubmenuActive {
+  background: rgba(246, 185, 26, 0.12) !important;
+
+  .submenuLabel strong {
+    color: var(--brand-kowhai);
+  }
+}
+
+.drawerFooter {
+  display: grid;
+  flex: 0 0 auto;
+  gap: 14px;
+  padding: 20px;
+  border-top: 1px solid var(--light-outline-variant);
+}
+
 .mobileQuoteButton {
-  margin: 24px 16px !important;
+  padding: 12px 22px !important;
   color: var(--light-on-primary) !important;
+  font-weight: 700 !important;
   background: var(--brand-kowhai) !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
 
   &:hover {
     background: var(--brand-kowhai-bright) !important;
   }
 }
 
+.drawerPhoneLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--light-on-surface-variant);
+  font-size: 0.95rem;
+
+  svg {
+    font-size: 1.15rem;
+    color: var(--brand-kowhai);
+  }
+
+  strong {
+    color: var(--light-on-surface);
+    font-weight: 700;
+  }
+
+  &:hover strong {
+    color: var(--brand-kowhai);
+  }
+}
+
+/* ---------- Small screens ---------- */
+
 @media (max-width: 600px) {
-  .toolbar {
-    min-height: 64px !important;
+  .header {
+    --header-height: 66px;
+  }
+
+  .headerScrolled {
+    --header-height: 60px;
   }
 
   .logo {
-    width: 46px;
-    height: 46px;
+    width: 42px;
+    height: 42px;
   }
 
   .brandName {
-    font-size: 0.92rem;
+    font-size: 0.95rem;
   }
 
   .drawerHeader {
-    min-height: 64px;
+    min-height: 66px;
+    padding-inline: 16px;
+  }
+
+  .mobileList {
+    padding-inline: 16px;
+  }
+
+  .drawerFooter {
+    padding: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .toolbar,
+  .logo,
+  .desktopLink,
+  .desktopLink::after,
+  .submenuWrapper,
+  .quoteButton,
+  .arrow {
+    transition: none !important;
   }
 }

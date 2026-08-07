@@ -151,7 +151,7 @@ async function submitHubSpotForm({ fields, fileId, formId, portalId, request }) 
     ["phone", fields.phone],
     ["services_required", fields.services_required],
     ["message", fields.hubspotMessage || fields.message],
-    ["windscreen_photo", String(fileId)],
+    ...(fileId ? [["windscreen_photo", String(fileId)]] : []),
     ...(fields.submission_type === "booking" && fields.booking_date__time
       ? [["booking_date__time", fields.booking_date__time]]
       : []),
@@ -224,7 +224,7 @@ function buildNoteBody(fields, photo) {
     ["Email", fields.email],
     ["Preferred date and time", bookingDateTime],
     ["Message", fields.message || "No additional message"],
-    ["Original photo name", photo.name],
+    ["Original photo name", photo?.name || "No photo provided"],
     ["Landing page", fields.pageUri || "/send-photo"],
   ];
 
@@ -243,7 +243,7 @@ async function attachLeadNote({ contactId, fileId, fields, photo }, token) {
       properties: {
         hs_timestamp: new Date().toISOString(),
         hs_note_body: buildNoteBody(fields, photo),
-        hs_attachment_ids: String(fileId),
+        ...(fileId ? { hs_attachment_ids: String(fileId) } : {}),
       },
       associations: [
         {
@@ -276,9 +276,10 @@ function validateSubmission(fields, photo) {
       return "Choose the current time or a future date and time.";
     }
   }
-  if (!(photo instanceof File) || photo.size === 0) return "Add a photo.";
-  if (!ACCEPTED_FILE_TYPES.has(photo.type)) return "Use a supported image format.";
-  if (photo.size > MAX_FILE_SIZE) return "The photo must be smaller than 10 MB.";
+  if (photo) {
+    if (!ACCEPTED_FILE_TYPES.has(photo.type)) return "Use a supported image format.";
+    if (photo.size > MAX_FILE_SIZE) return "The photo must be smaller than 10 MB.";
+  }
   return "";
 }
 
@@ -297,7 +298,9 @@ export async function POST(request) {
       pageUri: String(formData.get("pageUri") || "").trim().slice(0, 500),
       website: String(formData.get("website") || "").trim(),
     };
-    const photo = formData.get("windscreen_photo");
+    const photoField = formData.get("windscreen_photo");
+    const photo =
+      photoField instanceof File && photoField.size > 0 ? photoField : null;
     const validationError = validateSubmission(fields, photo);
 
     if (validationError === "spam") {
@@ -344,11 +347,11 @@ export async function POST(request) {
     }
 
     const contact = await upsertContact(fields, token);
-    const file = await uploadPhoto(photo, token);
-    await setContactPhoto(contact.id, file.id, token);
+    const file = photo ? await uploadPhoto(photo, token) : null;
+    if (file) await setContactPhoto(contact.id, file.id, token);
     await submitHubSpotForm({
       fields,
-      fileId: file.id,
+      fileId: file?.id,
       formId,
       portalId,
       request,
@@ -356,7 +359,7 @@ export async function POST(request) {
     await attachLeadNote(
       {
         contactId: contact.id,
-        fileId: file.id,
+        fileId: file?.id,
         fields,
         photo,
       },
@@ -388,7 +391,7 @@ export async function POST(request) {
           `Message: ${fields.message || "Not provided"}`,
           `Page: ${fields.pageUri || (isBooking ? "/book-now" : "/send-photo")}`,
           "",
-          `Photo attached: ${photo.name}`,
+          photo ? `Photo attached: ${photo.name}` : "No photo provided",
         ].join("\n"),
       }),
       sendLeadNotification({
@@ -401,8 +404,10 @@ export async function POST(request) {
           `Hi ${fields.firstname},`,
           "",
           isBooking
-            ? "Thanks for requesting a booking with AS Autoglass. We’ve received your details and photo. Your requested time is not confirmed yet—our local team will contact you to confirm availability."
-            : "Thanks for sending your photo to AS Autoglass. Our local team will review it and contact you with honest advice on the right next step.",
+            ? `Thanks for requesting a booking with AS Autoglass. We’ve received your details${photo ? " and photo" : ""}. Your requested time is not confirmed yet—our local team will contact you to confirm availability.`
+            : photo
+              ? "Thanks for sending your photo to AS Autoglass. Our local team will review it and contact you with honest advice on the right next step."
+              : "Thanks for your enquiry to AS Autoglass. Our local team will review your details and contact you with honest advice on the right next step.",
           "",
           `Service: ${fields.services_required}`,
           ...(isBooking && readableBookingTime

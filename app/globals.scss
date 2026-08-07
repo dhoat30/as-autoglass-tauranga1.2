@@ -9,6 +9,9 @@ body {
 
   box-sizing: border-box;
   background: var(--light-surface-container-low);
+  /* MUI Typography sets its own font; this covers plain elements, which would
+     otherwise fall back to the browser default serif. */
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
 }
 
 a {

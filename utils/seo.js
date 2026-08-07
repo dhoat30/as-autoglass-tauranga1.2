@@ -32,6 +32,13 @@ export function plainText(value = "") {
     .trim();
 }
 
+export const DEFAULT_OG_IMAGE = {
+  url: getPageUrl("/opengraph-image"),
+  width: 1200,
+  height: 630,
+  alt: `${siteName} — Windscreen Repair & Replacement Tauranga`,
+};
+
 function getYoastImages(yoast, title) {
   const images = Array.isArray(yoast?.og_image) ? yoast.og_image : [];
 
@@ -73,7 +80,8 @@ export function buildMetadata({
   const description =
     plainText(yoast?.description) || plainText(fallbackDescription);
   const canonical = getPageUrl(path);
-  const images = getYoastImages(yoast, title);
+  const yoastImages = getYoastImages(yoast, title);
+  const images = yoastImages.length ? yoastImages : [DEFAULT_OG_IMAGE];
   const twitterImage = yoast?.twitter_image || images[0]?.url;
 
   return {
@@ -89,13 +97,13 @@ export function buildMetadata({
       siteName,
       locale: "en_NZ",
       type,
-      ...(images.length ? { images } : {}),
+      images,
     },
     twitter: {
       card: "summary_large_image",
       title: plainText(yoast?.twitter_title) || title,
       description: plainText(yoast?.twitter_description) || description,
-      ...(twitterImage ? { images: [twitterImage] } : {}),
+      images: [twitterImage],
     },
   };
 }
