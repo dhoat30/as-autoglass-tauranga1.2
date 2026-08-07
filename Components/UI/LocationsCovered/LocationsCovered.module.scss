@@ -1,0 +1,122 @@
+.section {
+  padding: 88px 0;
+  background: var(--light-surface-container-low);
+
+  @media (max-width: 900px) {
+    padding: 64px 0;
+  }
+
+  @media (max-width: 600px) {
+    padding: 48px 0;
+  }
+}
+
+.container {
+  grid-template-columns: minmax(0, 0.85fr) minmax(460px, 1.15fr);
+  align-items: start;
+  gap: clamp(40px, 5vw, 72px) !important;
+
+  @media (max-width: 1000px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contentWrapper {
+  min-width: 0;
+  padding-top: 12px;
+}
+
+.title {
+  max-width: 620px;
+  color: var(--light-on-surface) !important;
+  font-size: clamp(2.25rem, 3.6vw, 3.35rem) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.04em !important;
+}
+
+.description {
+  max-width: 650px;
+  color: var(--light-on-surface-variant) !important;
+  font-size: 1.04rem !important;
+  line-height: 1.6 !important;
+}
+
+.locationsWrapper {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 22px !important;
+  margin-top: 28px !important;
+  padding-top: 18px;
+  border-top: 1px solid var(--light-outline-variant);
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.locationItem {
+  min-width: 0;
+}
+
+.location {
+  position: relative;
+  width: 100%;
+  margin: 2px 0 !important;
+  padding: 11px 14px 11px 32px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--light-on-surface) !important;
+  cursor: pointer;
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: 13px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--brand-kowhai);
+    box-shadow: 0 0 0 3px rgba(246, 185, 26, 0.12);
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(246, 185, 26, 0.1);
+    color: var(--light-on-surface) !important;
+    outline: none;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--brand-kowhai);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.55;
+  }
+}
+
+.selectedLocation {
+  background: var(--brand-kowhai) !important;
+  color: var(--light-on-primary) !important;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--brand-kowhai) !important;
+    color: var(--light-on-primary) !important;
+  }
+
+  &::before {
+    background: var(--light-on-primary);
+    box-shadow: none;
+  }
+}

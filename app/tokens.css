@@ -1,0 +1,156 @@
+:root {
+  /*
+   * AS Autoglass — Midnight Pounamu
+   *
+   * Core brand colours are exposed separately from the legacy Material token
+   * names so future components can use clear, memorable values.
+   */
+  --brand-kowhai: #f6b91a;
+  --brand-kowhai-bright: #ffcc45;
+  --brand-kowhai-deep: #c88b00;
+  --brand-pounamu: #4fc497;
+  --brand-pounamu-deep: #174c3a;
+  --brand-glass: #7dcfe3;
+  --brand-volcanic: #090d0b;
+
+  --material-theme--white: #ffffff;
+  --material-theme--black: #000000;
+  --text-gradient: linear-gradient(
+    100deg,
+    var(--brand-kowhai) 0%,
+    var(--brand-pounamu) 100%
+  );
+
+  /*
+   * Active site palette.
+   *
+   * The project historically references the --light-* family throughout its
+   * components. These aliases intentionally hold the active dark-site values
+   * to preserve compatibility while providing a unified visual system.
+   */
+  --light-primary: var(--brand-kowhai);
+  --light-surface-tint: var(--brand-kowhai);
+  --light-on-primary: #1c1500;
+  --light-primary-container: #523b00;
+  --light-on-primary-container: #ffe7a1;
+
+  --light-secondary: var(--brand-pounamu);
+  --light-on-secondary: #042218;
+  --light-secondary-container: var(--brand-pounamu-deep);
+  --light-on-secondary-container: #c2f5df;
+
+  --light-tertiary: var(--brand-glass);
+  --light-on-tertiary: #062229;
+  --light-tertiary-container: #173f49;
+  --light-on-tertiary-container: #cef5ff;
+
+  --light-error: #ffb4ab;
+  --light-on-error: #690005;
+  --light-error-container: #93000a;
+  --light-on-error-container: #ffdad6;
+
+  --light-background: var(--brand-volcanic);
+  --light-on-background: #f1f6f2;
+  --light-surface: var(--brand-volcanic);
+  --light-on-surface: #f1f6f2;
+  --light-surface-variant: #24322b;
+  --light-on-surface-variant: #b9c8be;
+  --light-outline: #829187;
+  --light-outline-variant: #34463c;
+  --light-shadow: #000000;
+  --light-scrim: #000000;
+
+  --light-inverse-surface: #dfe9e2;
+  --light-inverse-on-surface: #17211b;
+  --light-inverse-primary: #745500;
+
+  --light-primary-fixed: #ffe08a;
+  --light-on-primary-fixed: #251a00;
+  --light-primary-fixed-dim: var(--brand-kowhai-deep);
+  --light-on-primary-fixed-variant: #574000;
+
+  --light-secondary-fixed: #b8ecd5;
+  --light-on-secondary-fixed: #002117;
+  --light-secondary-fixed-dim: var(--brand-pounamu);
+  --light-on-secondary-fixed-variant: #15513c;
+
+  --light-tertiary-fixed: #bcecf7;
+  --light-on-tertiary-fixed: #001f26;
+  --light-tertiary-fixed-dim: var(--brand-glass);
+  --light-on-tertiary-fixed-variant: #24505a;
+
+  --light-surface-dim: #060906;
+  --light-surface-bright: #2c3931;
+  --light-surface-container-lowest: #050806;
+  --light-surface-container-low: #0e1511;
+  --light-surface-container: #141d18;
+  --light-surface-container-high: #1a261f;
+  --light-surface-container-highest: #233129;
+
+  --light-eyebrow-text: var(--brand-kowhai);
+
+  /*
+   * Dark semantic family.
+   *
+   * Kept in sync with the active palette for components that already consume
+   * --dark-* tokens, while using slightly brighter foreground accents.
+   */
+  --dark-primary: var(--brand-kowhai-bright);
+  --dark-surface-tint: var(--brand-kowhai-bright);
+  --dark-on-primary: #211800;
+  --dark-primary-container: #5f4500;
+  --dark-on-primary-container: #ffe7a1;
+
+  --dark-secondary: #6fdbad;
+  --dark-on-secondary: #003827;
+  --dark-secondary-container: #15513c;
+  --dark-on-secondary-container: #a9f3d2;
+
+  --dark-tertiary: #9addf0;
+  --dark-on-tertiary: #003640;
+  --dark-tertiary-container: #24505a;
+  --dark-on-tertiary-container: #bcecf7;
+
+  --dark-error: #ffb4ab;
+  --dark-on-error: #690005;
+  --dark-error-container: #93000a;
+  --dark-on-error-container: #ffdad6;
+
+  --dark-background: var(--brand-volcanic);
+  --dark-on-background: #f1f6f2;
+  --dark-surface: var(--brand-volcanic);
+  --dark-on-surface: #ffffff;
+  --dark-surface-variant: #b9c8be;
+  --dark-on-surface-variant: #b9c8be;
+  --dark-outline: #829187;
+  --dark-outline-variant: #34463c;
+  --dark-shadow: #000000;
+  --dark-scrim: #000000;
+
+  --dark-inverse-surface: #dfe9e2;
+  --dark-inverse-on-surface: #17211b;
+  --dark-inverse-primary: #765700;
+
+  --dark-primary-fixed: #ffe08a;
+  --dark-on-primary-fixed: #251a00;
+  --dark-primary-fixed-dim: var(--brand-kowhai);
+  --dark-on-primary-fixed-variant: #574000;
+
+  --dark-secondary-fixed: #b8ecd5;
+  --dark-on-secondary-fixed: #002117;
+  --dark-secondary-fixed-dim: #6fdbad;
+  --dark-on-secondary-fixed-variant: #15513c;
+
+  --dark-tertiary-fixed: #bcecf7;
+  --dark-on-tertiary-fixed: #001f26;
+  --dark-tertiary-fixed-dim: #9addf0;
+  --dark-on-tertiary-fixed-variant: #24505a;
+
+  --dark-surface-dim: #060906;
+  --dark-surface-bright: #2c3931;
+  --dark-surface-container-lowest: #050806;
+  --dark-surface-container-low: #0e1511;
+  --dark-surface-container: #141d18;
+  --dark-surface-container-high: #1a261f;
+  --dark-surface-container-highest: #233129;
+}

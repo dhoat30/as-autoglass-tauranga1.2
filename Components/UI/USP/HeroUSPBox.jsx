@@ -1,0 +1,46 @@
+import Typography from "@mui/material/Typography";
+import Image from "next/image";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import styles from "./HeroUSP.module.scss";
+
+export default function HeroUSPBox({ data, className, twoColumnsGrid }) {
+  if (!data) return;
+  return (
+    <div className={`${className} ${styles.textUspContainerBox}`}>
+      {data.text_usp && data.text_usp.length > 0 && (
+        <div className={`${styles.textUspWrapper} ${twoColumnsGrid && styles.twoColumnsGrid} usp-wrapper mb-16 flex flex-wrap mt-16 gap-16`}>
+          {data.text_usp.map((item, index) => {
+            return (
+              <Typography
+                variant="subtitle1"
+                component="div"
+                className={`flex align-center justify-center align-start gap-4 ${styles.textUSP}`}
+                key={index}
+              >
+                <CheckCircleOutlineOutlinedIcon className={styles.icon} />
+                <span>{item.value}</span>
+              </Typography>
+            );
+          })}
+        </div>
+      )}
+
+      {data.image_usp && data.image_usp.length > 0 && (
+        <div className={styles.badgeWrapper}>
+          {data.image_usp.map((item, index) => (
+            <div className={styles.badgeItem} key={index}>
+              <Image
+                src={item.image.url}
+                alt={item.image.alt || ""}
+                fill
+                className={styles.badgeImage}
+                sizes="(max-width: 640px) 110px, 130px"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+

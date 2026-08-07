@@ -1,0 +1,242 @@
+.section {
+  padding: 72px 0;
+  background: var(--light-surface-container-lowest);
+
+  @media (max-width: 900px) {
+    padding: 56px 0;
+  }
+
+  @media (max-width: 600px) {
+    padding: 40px 0;
+  }
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  width: 100%;
+  max-width: 1240px;
+  min-height: 550px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #141d18;
+  border: 1px solid rgba(246, 185, 26, 0.3);
+  border-radius: 28px;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.28);
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  @media (max-width: 600px) {
+    border-radius: 18px;
+  }
+}
+
+.leftColumn,
+.rightColumn {
+  padding: clamp(48px, 5vw, 76px);
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.rightColumn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: clamp(48px, 5vw, 76px);
+    bottom: clamp(48px, 5vw, 76px);
+    left: 0;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  @media (max-width: 900px) {
+    &::before {
+      top: 0;
+      right: 40px;
+      bottom: auto;
+      left: 40px;
+      width: auto;
+      height: 1px;
+    }
+  }
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--brand-kowhai-bright) !important;
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif !important;
+  font-size: 0.76rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase;
+
+  &::before {
+    content: "";
+    width: 32px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.75;
+  }
+}
+
+.badgeWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 132px;
+  min-height: 150px;
+  margin-top: 24px;
+}
+
+.badge {
+  width: auto;
+  max-width: 126px;
+  height: auto;
+  max-height: 166px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.22));
+}
+
+.title {
+  max-width: 520px;
+  margin-top: 30px !important;
+  color: #ffffff !important;
+  font-size: clamp(2.6rem, 4.3vw, 4rem) !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.05em !important;
+  text-wrap: balance;
+
+  span {
+    color: var(--brand-kowhai-bright);
+  }
+}
+
+.description {
+  color: rgba(255, 255, 255, 0.8);
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.55;
+
+  p {
+    margin: 0;
+  }
+
+  strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+}
+
+.guaranteeList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 38px;
+
+  li {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    align-items: start;
+    gap: 9px;
+    color: #ffffff;
+    font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+    font-size: 0.93rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  svg {
+    color: var(--brand-kowhai-bright);
+    font-size: 21px;
+  }
+
+  @media (max-width: 1100px) {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+.ctaWrapper {
+  width: 100%;
+  margin-top: 36px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cta {
+  padding: 12px 30px !important;
+  background: var(--brand-kowhai) !important;
+  border: 0 !important;
+  color: var(--light-on-primary) !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease !important;
+
+  &:hover {
+    background: var(--brand-kowhai-bright) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .leftColumn,
+  .rightColumn {
+    padding: 48px 40px;
+  }
+
+  .leftColumn {
+    min-height: 470px;
+  }
+}
+
+@media (max-width: 600px) {
+  .leftColumn,
+  .rightColumn {
+    padding: 36px 24px;
+  }
+
+  .leftColumn {
+    min-height: 0;
+  }
+
+  .rightColumn::before {
+    right: 24px;
+    left: 24px;
+  }
+
+  .badgeWrapper {
+    width: 104px;
+    min-height: 120px;
+    margin-top: 20px;
+  }
+
+  .badge {
+    max-width: 100px;
+    max-height: 132px;
+  }
+
+  .title {
+    margin-top: 24px !important;
+    font-size: clamp(2.35rem, 11vw, 3rem) !important;
+  }
+
+  .guaranteeList {
+    margin-top: 28px;
+  }
+}

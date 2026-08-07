@@ -1,0 +1,144 @@
+.container {
+  padding: 0 !important;
+
+  .inputWrapper {
+    background: var(--light--surface-container);
+    border-radius: 12px;
+
+  }
+
+}
+
+.multipartFormContainer {
+  background: var(--light-surface-container-lowest);
+  border: 1px solid var(--light-outline-variant);
+  border-radius: 12px;
+padding:0 !important; 
+      overflow: hidden ;
+
+  .formHeader {
+    background: var(--light-primary); 
+      padding: 16px 24px 8px 24px;
+    .formTitleWrapper {
+      border-radius: 12px;
+      margin-bottom: 24px;
+
+     
+    }
+    .stepsTextWrapper{ 
+      background-color: var(--dark-inverse-primary);
+      min-width: 90px; 
+      padding: 6px 16px; 
+    }
+
+    .stepsContainer{ 
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+
+      @media(max-width: 520px) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .stepWrapper { 
+        min-width: 0;
+
+   .stepLine{ 
+    height: 8px; 
+    width: 100%; 
+    border-radius: 50px;
+   }
+
+        :global(.MuiTypography-root) {
+          overflow-wrap: break-word;
+
+          @media(max-width: 520px) {
+            font-size: 12px;
+            line-height: 1.2;
+          }
+        }
+      }
+    }
+  }
+.inputContainer{ 
+  padding: 16px 24px; 
+    .inputWrapper{ 
+      .stepHeading {
+        margin-bottom: 16px;
+
+        .stepTitle {
+          color: var(--light-primary);
+        }
+
+        .stepSubtitle {
+          margin-top: 8px;
+          max-width: 560px;
+        }
+      }
+
+      .toggleField,
+      .radioField,
+      .consentField {
+        margin-top: 16px;
+      }
+
+      .toggleField {
+        .toggleGroup {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-top: 12px;
+
+          :global(.MuiToggleButton-root) {
+            border: 1px solid var(--light-outline-variant);
+            border-radius: 999px !important;
+            color: var(--light-primary);
+            padding: 8px 14px;
+            text-transform: none;
+
+            &:hover {
+              background: var(--light-primary);
+              border-color: var(--light-primary);
+              color: #fff !important;
+            }
+
+            &:global(.Mui-selected),
+            &:global(.Mui-selected:hover) {
+              background: var(--light-primary);
+              border-color: var(--light-primary);
+              color: #fff !important;
+            }
+
+            &:global(.Mui-selected *) {
+              color: #fff !important;
+            }
+          }
+        }
+      }
+
+      .radioField {
+        :global(.MuiRadioGroup-root) {
+          gap: 16px;
+          margin-top: 8px;
+        }
+      }
+
+      .consentField {
+        :global(.MuiFormControlLabel-root) {
+          align-items: flex-start;
+          margin-left: 0;
+        }
+
+        :global(.MuiCheckbox-root) {
+          padding-top: 0;
+        }
+      }
+
+      .buttonWrapper {
+        @media(max-width: 520px) {
+          flex-direction: column;
+        }
+      }
+    }
+}
+
+}

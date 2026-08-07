@@ -1,0 +1,34 @@
+.media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--light-surface-container-lowest);
+}
+
+.placeholder,
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(1.12) saturate(1.06);
+}
+
+.placeholder {
+  z-index: 1;
+  transition: opacity 0.8s ease;
+}
+
+.placeholderHidden {
+  opacity: 0;
+}
+
+.video {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.videoVisible {
+  opacity: 1;
+}

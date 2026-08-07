@@ -1,0 +1,122 @@
+.section {
+  padding: 56px 0 88px;
+  background: var(--light-surface-container-lowest);
+
+  @media (max-width: 700px) {
+    padding: 40px 0 64px;
+  }
+}
+
+.container {
+  max-width: 860px;
+}
+
+.content {
+  // padding-left: 12px;
+  // border-left: 3px solid var(--light-outline-variant);
+
+  @media (max-width: 700px) {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+.html {
+  margin: 0;
+
+  p:first-child {
+    display: inline-flex;
+    padding: 10px 14px;
+    margin: 0 0 18px;
+    border: 1px solid var(--light-outline-variant);
+    border-radius: 8px;
+    background: var(--light-surface-container-low);
+    color: var(--light-on-surface);
+    font-weight: 700;
+  }
+
+  p {
+    max-width: 780px;
+    margin: 10px 0;
+    color: var(--light-on-surface-variant);
+    font-size: 1.05rem;
+    line-height: 1.68;
+    letter-spacing: 0;
+  }
+
+  h2,
+  h3,
+  h4 {
+    max-width: 780px;
+    margin: 42px 0 8px;
+    color: var(--light-on-surface) !important;
+    font-family: var(--font-prompt), sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0;
+
+    @media (max-width: 600px) {
+      font-size: 1.65rem;
+    }
+  }
+
+  h2:first-child {
+    margin-top: 0;
+  }
+
+  h2 strong,
+  h3 strong,
+  h4 strong {
+    color: var(--light-on-surface) !important;
+  }
+
+  h3 {
+    margin-top: 32px;
+    font-size: 1.35rem;
+  }
+
+  h4 {
+    margin-top: 26px;
+    font-size: 1.12rem;
+  }
+
+  strong {
+    color: var(--light-on-surface);
+    font-weight: 700;
+  }
+
+  ul,
+  ol {
+    max-width: 780px;
+    margin: 16px 0 24px;
+  }
+
+  li {
+    position: relative;
+    margin: 8px 0;
+    color: var(--light-on-surface-variant);
+    line-height: 1.6;
+  }
+
+  ul li {
+    padding-left: 30px;
+  }
+
+  ul li::before {
+    position: absolute;
+    top: 4px;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    content: "" !important;
+    background: var(--brand-kowhai);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+
+  ol {
+    padding-left: 24px;
+    list-style: decimal;
+  }
+}

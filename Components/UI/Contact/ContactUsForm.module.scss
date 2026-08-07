@@ -1,0 +1,125 @@
+.card {
+  width: 100%;
+  max-width: 560px;
+  min-width: 0;
+  margin-left: auto;
+  overflow: hidden;
+  background: var(--light-surface-container);
+  border: 1px solid var(--light-outline-variant);
+  border-radius: 18px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+}
+
+.cardHeader {
+  padding: 26px 28px 20px;
+  text-align: left;
+  background: var(--light-surface-container-lowest);
+
+  h2 {
+    margin-top: 7px;
+    color: var(--light-on-surface);
+    font-family: var(--font-prompt), "Segoe UI", sans-serif;
+    font-size: clamp(1.65rem, 3vw, 2rem);
+    font-weight: 800;
+    line-height: 1.15;
+  }
+
+  > p:last-child {
+    margin-top: 7px;
+    color: var(--light-on-surface-variant);
+    font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+    font-size: 0.88rem;
+  }
+}
+
+.cardEyebrow {
+  color: var(--brand-kowhai) !important;
+  font-size: 0.7rem !important;
+}
+
+.promiseBar {
+  padding: 9px 20px;
+  color: var(--light-on-primary);
+  background: var(--brand-kowhai);
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.form {
+  display: grid;
+  gap: 4px;
+  padding: 28px;
+}
+
+.twoColumns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.honeypot {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+}
+
+.submitButton {
+  margin-top: 4px !important;
+  padding: 13px 22px !important;
+  color: var(--light-on-primary) !important;
+  background: var(--brand-kowhai) !important;
+  font-size: 1rem !important;
+  font-weight: 800 !important;
+
+  &:hover {
+    background: var(--brand-kowhai-bright) !important;
+  }
+}
+
+.privacyNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+  color: var(--light-on-surface-variant);
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  text-align: left;
+
+  svg {
+    flex: 0 0 auto;
+    margin-top: 1px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .card {
+    max-width: min(700px, 100%);
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .card {
+    max-width: 100%;
+    border-radius: 14px;
+  }
+
+  .cardHeader,
+  .form {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .twoColumns {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}

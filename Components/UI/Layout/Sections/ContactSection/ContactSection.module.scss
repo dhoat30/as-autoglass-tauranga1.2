@@ -1,0 +1,142 @@
+.section { 
+    padding: 120px 0 0 0; 
+    @media(max-width: 1300px) { 
+        padding: 80px 0 0 0; 
+    }
+    .container { 
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: start;
+        @media(max-width: 800px){ 
+            grid-template-columns: 1fr; 
+            gap: 16px; 
+        }
+        .contact-wrapper{ }
+        .uspWrapper {
+            border-top: 1px solid var(--light-outline-variant);
+            max-width: 620px;
+
+            .uspItem {
+                display: grid;
+                grid-template-columns: 20px minmax(0, 1fr);
+                align-items: start;
+                gap: 8px;
+                border-bottom: 1px solid var(--light-outline-variant);
+                padding: 20px 0;
+
+                .uspIcon {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 20px;
+                    height: 20px;
+                    position:relative; 
+                    top: 1px; 
+                    :global(img) {
+                        width: 16px;
+                        height: 16px;
+                        object-fit: contain;
+                    }
+                }
+
+                .uspText {
+                    color: var(--light-primary);
+
+                    :global(p) {
+                        margin: 0;
+                    }
+
+                    :global(strong) {
+                        font-weight: 700;
+                    }
+                }
+            }
+        }
+        .contactFormWrapper{ 
+            padding: 0 24px 24px 24px ; 
+        }
+    }
+
+    .contactCardsContainer {
+        .contactCardsGrid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+
+            @media(max-width: 640px) {
+                gap: 16px;
+            }
+
+            .contactCard {
+                display: flex;
+                flex-direction: column;
+                flex: 1 1 280px;
+                min-height: 328px;
+                max-width: 370px;
+                background: var(--light-surface-container-lowest);
+                border: 1px solid var(--light-outline-variant);
+                border-radius: 12px;
+                color: var(--light-primary);
+                padding: 36px 28px;
+                text-decoration: none;
+                transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+
+                @media(max-width: 640px) {
+                    flex-basis: 100%;
+                    max-width: 100%;
+                }
+
+                &:hover {
+                    border-color: var(--light-secondary);
+                    box-shadow: 0 12px 30px rgba(27, 40, 92, 0.08);
+                    transform: translateY(-2px);
+
+                    .contactCardArrow {
+                        transform: translateX(4px);
+                    }
+                }
+
+                .contactCardIcon {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 52px;
+                    height: 52px;
+                    border-radius: 12px;
+                    background: var(--light-surface-container);
+                    color: var(--light-eyebrow-text);
+
+                    :global(svg) {
+                        font-size: 24px;
+                    }
+                }
+
+                .contactCardEyebrow {
+                 
+                    letter-spacing: 0.14em;
+                    margin-top: 28px;
+                    text-transform: uppercase;
+                }
+
+                .contactCardTitle {
+                    color: var(--light-primary);
+                    font-weight: 700;
+                    margin-top: 10px;
+                }
+
+                .contactCardDescription {
+                    color: var(--light-on-surface-variant);
+                    margin-top: 12px;
+                }
+
+                .contactCardArrow {
+                    display: inline-flex;
+                    color: var(--light-secondary);
+                    margin-top: auto;
+                    transition: transform 160ms ease;
+                }
+            }
+        }
+    }
+}

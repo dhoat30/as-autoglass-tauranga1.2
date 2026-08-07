@@ -1,0 +1,235 @@
+.header {
+  background: var(--light-surface-container-lowest);
+  border-bottom: 1px solid var(--light-outline-variant);
+}
+
+.headerInner {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 78px;
+  gap: 24px;
+}
+
+.logoLink {
+  display: inline-flex;
+  line-height: 0;
+
+  img {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+  }
+}
+
+.headerContact {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--light-on-surface-variant);
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.phoneButton {
+  padding: 9px 20px !important;
+  color: var(--brand-kowhai) !important;
+  border-color: var(--brand-kowhai) !important;
+
+  &:hover {
+    color: var(--light-on-primary) !important;
+    background: var(--brand-kowhai) !important;
+    border-color: var(--brand-kowhai) !important;
+  }
+}
+
+.main {
+  min-height: calc(100vh - 140px);
+  padding: clamp(48px, 6vw, 88px) 0;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(246, 185, 26, 0.09), transparent 27rem),
+    var(--light-surface-container-low);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(480px, 0.9fr);
+  gap: clamp(52px, 8vw, 108px);
+  align-items: center;
+}
+
+@media (min-width: 1001px) {
+  .topAlignedHeroGrid {
+    align-items: start;
+  }
+}
+
+.content {
+  max-width: 620px;
+}
+
+.eyebrow {
+  color: var(--brand-kowhai) !important;
+  font-size: 0.76rem !important;
+  font-weight: 800 !important;
+}
+
+.title {
+  margin-top: 16px;
+  color: var(--light-on-surface);
+  font-family: var(--font-prompt), "Segoe UI", sans-serif;
+  font-size: clamp(3rem, 5vw, 4.8rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+
+  span {
+    color: var(--brand-kowhai);
+  }
+}
+
+.lead {
+  max-width: 590px;
+  margin-top: 24px;
+  color: var(--light-on-surface-variant);
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  font-size: 1.08rem;
+  line-height: 1.65;
+}
+
+.benefits {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 28px;
+  margin-top: 30px;
+
+  li {
+    position: relative;
+    padding-left: 28px;
+    color: var(--light-on-surface);
+    font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+    font-size: 0.92rem;
+    font-weight: 650;
+    line-height: 1.45;
+
+    &::before {
+      content: "✓";
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: grid;
+      place-items: center;
+      width: 19px;
+      height: 19px;
+      color: #141d18;
+      background: var(--brand-kowhai);
+      border-radius: 50%;
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+  }
+}
+
+.trustStrip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 34px;
+  padding: 18px 0;
+  background: var(--light-surface-container);
+  border: 1px solid var(--light-outline-variant);
+  border-radius: 12px;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 17px;
+    font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+
+    &:not(:last-child) {
+      border-right: 1px solid var(--light-outline-variant);
+    }
+  }
+
+  strong {
+    color: var(--light-on-surface);
+    font-size: 0.82rem;
+  }
+
+  span {
+    color: var(--light-on-surface-variant);
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+}
+
+.footer {
+  color: rgba(255, 255, 255, 0.68);
+  background: var(--light-surface-container-lowest);
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+}
+
+.footerInner {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 62px;
+  gap: 20px;
+
+  a {
+    color: inherit;
+
+    &:hover {
+      color: var(--brand-kowhai);
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .content {
+    max-width: 740px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 650px) {
+  .headerContact > span {
+    display: none;
+  }
+
+  .phoneButton {
+    min-width: 0 !important;
+    padding: 8px 15px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .title {
+    font-size: clamp(2.65rem, 12vw, 3.5rem);
+  }
+
+  .benefits,
+  .trustStrip {
+    grid-template-columns: 1fr;
+  }
+
+  .trustStrip {
+    padding: 4px 18px;
+
+    > div {
+      padding: 14px 0;
+
+      &:not(:last-child) {
+        border-right: 0;
+        border-bottom: 1px solid var(--light-outline-variant);
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://asautoglass.co.nz
+
+# Sitemaps
+Sitemap: https://asautoglass.co.nz/sitemap.xml

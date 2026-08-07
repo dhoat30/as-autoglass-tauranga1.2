@@ -1,0 +1,350 @@
+.section {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  padding: 152px 0 80px;
+  overflow: hidden;
+  color: var(--light-on-surface);
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 78% 28%, rgba(246, 185, 26, 0.08), transparent 28rem),
+    var(--light-surface-container-low);
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    pointer-events: none;
+  }
+
+  &::before {
+    top: 104px;
+    right: -140px;
+    width: 420px;
+    height: 420px;
+    border: 1px solid rgba(246, 185, 26, 0.12);
+    border-radius: 50%;
+  }
+
+  &::after {
+    right: 70px;
+    bottom: 40px;
+    width: 180px;
+    height: 1px;
+    background: var(--brand-kowhai);
+    opacity: 0.45;
+  }
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  margin: auto;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 0.82fr);
+  align-items: center;
+  gap: clamp(56px, 8vw, 112px);
+}
+
+.confirmation {
+  max-width: 650px;
+}
+
+.statusIcon {
+  display: grid;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 30px;
+  color: var(--light-on-primary);
+  background: var(--brand-kowhai);
+  border-radius: 50%;
+  place-items: center;
+  box-shadow: 0 0 0 9px rgba(246, 185, 26, 0.09);
+
+  svg {
+    font-size: 2.25rem;
+  }
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  color: var(--brand-kowhai);
+  font-family: var(--font-work-sans), Segoe UI, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  &::before {
+    width: 34px;
+    height: 1px;
+    content: "";
+    background: currentColor;
+  }
+}
+
+.confirmation h1 {
+  max-width: 620px;
+  margin: 0;
+  font-family: var(--font-prompt), var(--font-work-sans), sans-serif;
+  font-size: clamp(2.7rem, 5vw, 4.8rem);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.intro {
+  max-width: 620px;
+  margin-top: 26px;
+  color: var(--light-on-surface-variant);
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+  line-height: 1.7;
+}
+
+.responseNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  margin-top: 30px;
+  padding: 18px 0;
+  border-top: 1px solid var(--light-outline-variant);
+  border-bottom: 1px solid var(--light-outline-variant);
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  strong {
+    color: var(--light-on-surface);
+    font-size: 0.98rem;
+  }
+
+  span:not(.responseDot) {
+    color: var(--light-on-surface-variant);
+    font-size: 0.92rem;
+  }
+}
+
+.responseDot {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  margin-top: 7px;
+  background: var(--brand-kowhai);
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px rgba(246, 185, 26, 0.1);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.primaryButton,
+.phoneButton {
+  min-height: 54px;
+  padding-inline: 28px !important;
+  border-radius: 999px !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  box-shadow: none !important;
+}
+
+.primaryButton {
+  color: var(--light-on-primary) !important;
+  background: var(--brand-kowhai) !important;
+
+  &:hover {
+    background: var(--brand-kowhai-bright) !important;
+  }
+}
+
+.phoneButton {
+  color: var(--light-on-surface) !important;
+  border-color: var(--light-outline) !important;
+
+  &:hover {
+    color: var(--brand-kowhai) !important;
+    background: rgba(246, 185, 26, 0.06) !important;
+    border-color: var(--brand-kowhai) !important;
+  }
+}
+
+.nextSteps {
+  overflow: hidden;
+  background: var(--light-surface-container-lowest);
+  border: 1px solid var(--light-outline-variant);
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
+}
+
+.panelHeader {
+  padding: 30px 32px 26px;
+  border-bottom: 1px solid var(--light-outline-variant);
+
+  span {
+    color: var(--brand-kowhai);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin-top: 7px;
+    font-family: var(--font-prompt), var(--font-work-sans), sans-serif;
+    font-size: clamp(1.7rem, 2.6vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+  }
+}
+
+.nextSteps ol {
+  margin: 0;
+  padding: 8px 32px;
+  list-style: none;
+}
+
+.nextSteps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 18px;
+  padding: 23px 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--light-outline-variant);
+  }
+
+  h3 {
+    margin: 1px 0 6px;
+    color: var(--light-on-surface);
+    font-family: var(--font-prompt), var(--font-work-sans), sans-serif;
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+
+  p {
+    margin: 0;
+    color: var(--light-on-surface-variant);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+}
+
+.stepMarker {
+  position: relative;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  color: var(--brand-kowhai);
+  background: rgba(246, 185, 26, 0.08);
+  border: 1px solid rgba(246, 185, 26, 0.3);
+  border-radius: 14px;
+  place-items: center;
+
+  span {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    padding: 2px 5px;
+    color: var(--light-on-primary);
+    background: var(--brand-kowhai);
+    border-radius: 999px;
+    font-size: 0.61rem;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  svg {
+    font-size: 1.45rem;
+  }
+}
+
+.urgentNote {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 20px 32px;
+  color: var(--light-on-surface-variant);
+  background: rgba(246, 185, 26, 0.055);
+  border-top: 1px solid rgba(246, 185, 26, 0.18);
+
+  svg {
+    flex: 0 0 auto;
+    color: var(--brand-kowhai);
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  strong {
+    color: var(--light-on-surface);
+  }
+}
+
+@media (max-width: 900px) {
+  .section {
+    padding: 128px 0 64px;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .confirmation {
+    max-width: 720px;
+  }
+}
+
+@media (max-width: 600px) {
+  .section {
+    min-height: auto;
+    padding: 112px 0 48px;
+  }
+
+  .statusIcon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 26px;
+  }
+
+  .confirmation h1 {
+    font-size: clamp(2.5rem, 13vw, 3.5rem);
+  }
+
+  .actions {
+    display: grid;
+  }
+
+  .primaryButton,
+  .phoneButton {
+    width: 100%;
+  }
+
+  .nextSteps {
+    border-radius: 18px;
+  }
+
+  .panelHeader,
+  .nextSteps ol,
+  .urgentNote {
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+}

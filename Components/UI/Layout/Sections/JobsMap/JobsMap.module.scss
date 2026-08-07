@@ -1,0 +1,52 @@
+.section{ 
+    width: 100%; 
+  padding: 24px 0; 
+    .wrapper{ 
+        position: relative; 
+    }
+}
+
+.job_boxes{ 
+  @media(max-width:800px){ 
+    display: flex;
+    flex-direction: column;
+  }
+}
+.job_box_2, .job_box_1, .job_box_3 {
+    background-color: var(--light-surface-container-lowest);
+    padding: 16px 32px;
+    border-radius: 5px;
+    position: absolute; 
+z-index: 400;   
+max-width: 300px; 
+@media(max-width:800px){ 
+  position: static;
+  max-width: 500px; 
+  display: inline-block;
+  margin-top: 16px; 
+}
+  }
+  .job_box_1{ 
+    top: 60px; 
+    right: 0; 
+  }
+  .job_box_2{ 
+    bottom: -20px; 
+    left: 0; 
+  }
+
+  .job_box_3{ 
+    bottom: -20px; 
+    right: 0; 
+  }
+  .box_content {
+    text-align: left;
+    font-size: 14px;
+  }
+  
+  .box_content strong {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  

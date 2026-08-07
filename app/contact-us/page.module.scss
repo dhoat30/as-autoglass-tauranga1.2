@@ -1,0 +1,319 @@
+.main {
+  min-height: calc(100vh - 62px);
+  overflow: hidden;
+  background: var(--light-surface-container-low);
+}
+
+.hero {
+  padding: clamp(132px, 12vw, 172px) 0 clamp(64px, 8vw, 104px);
+  background:
+    radial-gradient(circle at 8% 14%, rgba(246, 185, 26, 0.09), transparent 28rem),
+    var(--light-surface-container-low);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.03fr) minmax(480px, 0.9fr);
+  align-items: center;
+  gap: clamp(52px, 8vw, 110px);
+
+  > * {
+    min-width: 0;
+  }
+}
+
+.content {
+  width: 100%;
+  max-width: 625px;
+  min-width: 0;
+
+  h1 {
+    margin-top: 15px;
+    color: var(--light-on-surface);
+    font-family: var(--font-prompt), "Segoe UI", sans-serif;
+    font-size: clamp(3rem, 5vw, 4.75rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.055em;
+    text-wrap: balance;
+
+    span {
+      color: var(--brand-kowhai);
+    }
+  }
+}
+
+.eyebrow {
+  color: var(--brand-kowhai) !important;
+  font-size: 0.76rem !important;
+}
+
+.lead {
+  overflow-wrap: anywhere;
+  max-width: 600px;
+  margin-top: 24px;
+  color: var(--light-on-surface-variant);
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  font-size: 1.06rem;
+  line-height: 1.65;
+}
+
+.phoneCard {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 30px;
+  padding: 15px 17px;
+  color: var(--light-on-surface);
+  background: var(--light-surface-container-lowest);
+  border: 1px solid var(--light-outline-variant);
+  border-radius: 12px;
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease;
+
+  &:hover {
+    border-color: var(--brand-kowhai);
+    transform: translateY(-2px);
+  }
+
+  > span:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  small {
+    color: var(--light-on-surface-variant);
+    font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+    font-size: 0.75rem;
+  }
+
+  strong {
+    font-family: var(--font-prompt), "Segoe UI", sans-serif;
+    font-size: 1.17rem;
+  }
+}
+
+.iconWrap {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  color: var(--light-on-primary);
+  background: var(--brand-kowhai);
+  border-radius: 50%;
+}
+
+.availability {
+  margin-left: auto;
+  padding: 5px 10px;
+  color: var(--brand-kowhai);
+  background: rgba(246, 185, 26, 0.1);
+  border-radius: 999px;
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 14px 15px;
+    color: var(--light-on-surface);
+    border: 1px solid var(--light-outline-variant);
+    border-radius: 12px;
+    transition: background-color 160ms ease, border-color 160ms ease;
+
+    &:hover {
+      background: var(--light-surface-container);
+      border-color: var(--light-outline);
+    }
+  }
+
+  svg {
+    flex: 0 0 auto;
+    color: var(--brand-kowhai);
+  }
+
+  span {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  strong,
+  small {
+    font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  }
+
+  strong {
+    font-size: 0.86rem;
+  }
+
+  small {
+    color: var(--light-on-surface-variant);
+    font-size: 0.69rem;
+    line-height: 1.3;
+  }
+}
+
+.contactDetails {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+
+  a {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 11px;
+    padding: 14px 15px;
+    color: var(--light-on-surface);
+    background: var(--light-surface-container);
+    border: 1px solid var(--light-outline-variant);
+    border-radius: 12px;
+    transition: border-color 160ms ease;
+
+    &:hover {
+      border-color: var(--brand-kowhai);
+    }
+  }
+
+  svg {
+    flex: 0 0 auto;
+    color: var(--brand-kowhai);
+  }
+
+  span {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  small,
+  strong {
+    font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  }
+
+  small {
+    color: var(--light-on-surface-variant);
+    font-size: 0.69rem;
+  }
+
+  strong {
+    overflow-wrap: anywhere;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    white-space: pre-line;
+  }
+}
+
+.assurances {
+  display: grid;
+  gap: 9px;
+  margin-top: 26px;
+
+  li {
+    position: relative;
+    padding-left: 27px;
+    color: var(--light-on-surface-variant);
+    font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.45;
+
+    &::before {
+      content: "✓";
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      color: var(--light-on-primary);
+      background: var(--brand-kowhai);
+      border-radius: 50%;
+      font-size: 0.7rem;
+      font-weight: 900;
+    }
+  }
+}
+
+.footer {
+  color: rgba(255, 255, 255, 0.68);
+  background: var(--light-surface-container-lowest);
+  border-top: 1px solid var(--light-outline-variant);
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+}
+
+.footerInner {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 62px;
+  gap: 20px;
+
+  a {
+    color: inherit;
+
+    &:hover {
+      color: var(--brand-kowhai);
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .grid {
+    width: 100%;
+    max-width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .content {
+    width: 100%;
+    max-width: min(740px, 100%);
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 620px) {
+  .hero {
+    padding-top: 116px;
+  }
+
+  .content h1 {
+    font-size: clamp(2.65rem, 12vw, 3.5rem);
+    overflow-wrap: anywhere;
+  }
+
+  .content {
+    max-width: 100%;
+  }
+
+  .quickActions {
+    grid-template-columns: 1fr;
+  }
+
+  .contactDetails {
+    grid-template-columns: 1fr;
+  }
+
+  .availability {
+    display: none;
+  }
+}

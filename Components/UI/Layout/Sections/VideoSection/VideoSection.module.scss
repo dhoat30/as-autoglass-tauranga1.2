@@ -1,0 +1,111 @@
+.section {
+  position: relative;
+  padding: 96px 0;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      rgba(79, 196, 151, 0.11),
+      transparent 42%
+    ),
+    var(--light-surface-container-low);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: min(88%, 1180px);
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--light-outline-variant),
+      transparent
+    );
+    transform: translateX(-50%);
+  }
+
+  @media (max-width: 900px) {
+    padding: 64px 0;
+  }
+
+  @media (max-width: 600px) {
+    padding: 48px 0;
+  }
+}
+
+.heading {
+  display: grid;
+  justify-items: center;
+  max-width: 920px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  color: var(--light-primary);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+
+  &::before,
+  &::after {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.55;
+  }
+}
+
+.title {
+  max-width: 920px;
+
+  h2 {
+    margin: 0;
+    color: var(--light-on-surface);
+    font-family: var(--font-prompt), sans-serif;
+    font-size: clamp(2.2rem, 4.7vw, 4rem);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+
+  strong {
+    color: var(--light-primary);
+    font-weight: inherit;
+  }
+
+}
+
+.videoFrame {
+  position: relative;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 5px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.22),
+      rgba(125, 207, 227, 0.08) 45%,
+      rgba(79, 196, 151, 0.14)
+    );
+  border: 1px solid rgba(210, 241, 232, 0.24);
+  border-radius: 21px;
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.2),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.4),
+    0 34px 85px rgba(0, 0, 0, 0.32);
+
+  > div {
+    overflow: hidden;
+    border-radius: 16px;
+  }
+}

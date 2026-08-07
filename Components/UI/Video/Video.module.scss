@@ -1,0 +1,131 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.videoWrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--light-surface-container-lowest);
+  border-radius: 16px;
+}
+
+.poster {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  color: var(--light-on-surface);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+
+  &:hover {
+    .posterImage {
+      transform: scale(1.025);
+    }
+
+    .playControl {
+      color: var(--light-on-primary);
+      background: var(--light-primary);
+      border-color: var(--light-primary);
+      transform: translateY(-2px);
+    }
+
+    .playIcon {
+      color: var(--light-primary);
+      background: var(--light-on-primary);
+    }
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--light-primary);
+    outline-offset: -6px;
+  }
+}
+
+.posterImage {
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.posterOverlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 20%, rgba(4, 10, 7, 0.2)),
+    linear-gradient(0deg, rgba(4, 10, 7, 0.42), rgba(4, 10, 7, 0.06) 60%);
+  transition: background 0.25s ease;
+}
+
+.playControl {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  padding: 7px 18px 7px 7px;
+  color: var(--light-on-surface);
+  background: rgba(7, 14, 10, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 999px;
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.16),
+    0 14px 35px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(16px) saturate(125%);
+  -webkit-backdrop-filter: blur(16px) saturate(125%);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.playIcon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  color: var(--light-on-primary);
+  background: var(--light-primary);
+  border-radius: 50%;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+
+  svg {
+    width: 27px;
+    height: 27px;
+  }
+}
+
+.player {
+  position: absolute !important;
+  inset: 0;
+}
+
+@media (max-width: 600px) {
+  .playControl {
+    gap: 8px;
+    padding: 6px 14px 6px 6px;
+    font-size: 0.85rem;
+  }
+
+  .playIcon {
+    width: 36px;
+    height: 36px;
+
+    svg {
+      width: 23px;
+      height: 23px;
+    }
+  }
+}
