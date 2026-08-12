@@ -32,6 +32,11 @@ export const headerLinks = [
     ],
   },
   {
+    id: "about-us",
+    label: "About Us",
+    url: "/about-us",
+  },
+  {
     id: "our-work",
     label: "Our Work",
     url: "/our-work/gallery",

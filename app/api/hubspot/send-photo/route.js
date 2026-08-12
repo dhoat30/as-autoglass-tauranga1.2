@@ -266,9 +266,10 @@ function validateSubmission(fields, photo) {
   if (fields.firstname.length < 2) return "Enter your first name.";
   if (!/^[+\d][\d\s()-]{7,}$/.test(fields.phone)) return "Enter a valid phone number.";
   if (!/^\S+@\S+\.\S+$/.test(fields.email)) return "Enter a valid email address.";
-  if (fields.submission_type === "booking") {
+  // A preferred date is optional; only a supplied value has to make sense.
+  if (fields.booking_date__time) {
     const preferredTime = new Date(fields.booking_date__time).getTime();
-    if (!fields.booking_date__time || Number.isNaN(preferredTime)) {
+    if (Number.isNaN(preferredTime)) {
       return "Choose a valid preferred date and time.";
     }
     const currentMinute = Math.floor(Date.now() / 60000) * 60000;
@@ -404,7 +405,11 @@ export async function POST(request) {
           `Hi ${fields.firstname},`,
           "",
           isBooking
-            ? `Thanks for requesting a booking with AS Autoglass. We’ve received your details${photo ? " and photo" : ""}. Your requested time is not confirmed yet—our local team will contact you to confirm availability.`
+            ? `Thanks for requesting a booking with AS Autoglass. We’ve received your details${photo ? " and photo" : ""}. ${
+                readableBookingTime
+                  ? "Your requested time is not confirmed yet—our local team will contact you to confirm availability."
+                  : "Our local team will contact you to arrange a time that suits you."
+              }`
             : photo
               ? "Thanks for sending your photo to AS Autoglass. Our local team will review it and contact you with honest advice on the right next step."
               : "Thanks for your enquiry to AS Autoglass. Our local team will review your details and contact you with honest advice on the right next step.",

@@ -22,6 +22,11 @@ export const commercialLinks = [];
 export const informationLinks = [
   { label: "Home", url: "/" },
   { label: "Our Work", url: "/our-work/gallery" },
+    {
+  
+    label: "About Us",
+    url: "/about-us",
+  },
   { label: "Send a Photo", url: "/send-photo" },
   { label: "Book Now", url: "/book-now" },
   { label: "Contact Us", url: "/contact-us" },

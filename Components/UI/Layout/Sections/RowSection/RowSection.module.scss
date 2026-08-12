@@ -235,7 +235,7 @@
   overflow: hidden;
   background: transparent;
   border: 1px solid rgba(210, 241, 232, 0.22);
-  border-radius: 22px;
+  border-radius: 16px !important;
   box-shadow:
     inset 1px 1px 0 rgba(255, 255, 255, 0.18),
     inset -1px -1px 0 rgba(0, 0, 0, 0.42),
@@ -255,6 +255,11 @@
         transparent 24%
       ),
       linear-gradient(0deg, rgba(4, 10, 7, 0.15), transparent 35%);
+  }
+  img{ 
+      border-radius: 16px !important;
+
+    overflow: hidden !important;
   }
 }
 

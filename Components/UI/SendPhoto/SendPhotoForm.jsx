@@ -91,7 +91,7 @@ function getPhotoError(file) {
 }
 
 function getPreferredDateTimeError(value) {
-  if (!value) return "Choose your preferred date and time.";
+  if (!value) return "";
 
   const selectedTime = new Date(value).getTime();
   if (Number.isNaN(selectedTime)) return "Choose a valid date and time.";
@@ -109,7 +109,7 @@ function getLocalDateTimeMinimum() {
   return localTime.toISOString().slice(0, 16);
 }
 
-function validate(values, requirePreferredDateTime = false) {
+function validate(values, validatePreferredDateTime = false) {
   const errors = {};
   if (!values.services_required) {
     errors.services_required = "Choose the service you need—or select ‘Not sure’.";
@@ -121,7 +121,8 @@ function validate(values, requirePreferredDateTime = false) {
   if (!/^\S+@\S+\.\S+$/.test(values.email.trim())) {
     errors.email = "Enter a valid email address.";
   }
-  if (requirePreferredDateTime) {
+  // The field is optional, so this only rejects a supplied value that is invalid.
+  if (validatePreferredDateTime) {
     const dateTimeError = getPreferredDateTimeError(values.booking_date__time);
     if (dateTimeError) errors.booking_date__time = dateTimeError;
   }
@@ -383,7 +384,7 @@ export default function SendPhotoForm({
 
         {bookingMode && (
           <TextField
-            label="Preferred date and time"
+            label="Preferred date and time (optional)"
             type="datetime-local"
             value={values.booking_date__time}
             onChange={(event) =>
@@ -395,10 +396,9 @@ export default function SendPhotoForm({
             )}
             helperText={
               (touched.booking_date__time && errors.booking_date__time) ||
-              "We’ll confirm availability with you before the booking is final."
+              "Leave this blank and we’ll suggest a time that suits you."
             }
             fullWidth
-            required
             sx={fieldSx}
             slotProps={{
               inputLabel: { shrink: true },
