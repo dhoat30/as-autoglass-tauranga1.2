@@ -260,6 +260,16 @@ async function attachLeadNote({ contactId, fileId, fields, photo }, token) {
   });
 }
 
+function logHubSpotError(message, error) {
+  console.error(message, {
+    name: error?.name,
+    status: error?.status,
+    message: error?.message,
+    category: error?.details?.category,
+    correlationId: error?.details?.correlationId,
+  });
+}
+
 function validateSubmission(fields, photo) {
   if (fields.website) return "spam";
   if (!SERVICE_OPTIONS.has(fields.services_required)) return "Choose a valid service.";
@@ -348,8 +358,19 @@ export async function POST(request) {
     }
 
     const contact = await upsertContact(fields, token);
-    const file = photo ? await uploadPhoto(photo, token) : null;
-    if (file) await setContactPhoto(contact.id, file.id, token);
+    let file = null;
+    let photoUploadFailed = false;
+
+    if (photo) {
+      try {
+        file = await uploadPhoto(photo, token);
+        if (file) await setContactPhoto(contact.id, file.id, token);
+      } catch (error) {
+        photoUploadFailed = true;
+        logHubSpotError("HubSpot photo upload failed; continuing without photo", error);
+      }
+    }
+
     await submitHubSpotForm({
       fields,
       fileId: file?.id,
@@ -357,15 +378,26 @@ export async function POST(request) {
       portalId,
       request,
     });
-    await attachLeadNote(
-      {
-        contactId: contact.id,
-        fileId: file?.id,
-        fields,
-        photo,
-      },
-      token,
-    );
+
+    try {
+      await attachLeadNote(
+        {
+          contactId: contact.id,
+          fileId: file?.id,
+          fields: {
+            ...fields,
+            message:
+              photoUploadFailed && photo
+                ? `${fields.message || "No additional message"}\n\nPhoto upload to HubSpot failed. Original filename: ${photo.name}`
+                : fields.message,
+          },
+          photo,
+        },
+        token,
+      );
+    } catch (error) {
+      logHubSpotError("HubSpot lead note attachment failed", error);
+    }
 
     const isBooking = fields.submission_type === "booking";
     const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER || "07 543 0009";
@@ -441,15 +473,12 @@ export async function POST(request) {
       }
     });
 
-    return NextResponse.json({ success: true }, { status: 201 });
+    return NextResponse.json(
+      { success: true, photoUploadFailed },
+      { status: 201 },
+    );
   } catch (error) {
-    console.error("HubSpot send-photo submission failed", {
-      name: error.name,
-      status: error.status,
-      message: error.message,
-      category: error.details?.category,
-      correlationId: error.details?.correlationId,
-    });
+    logHubSpotError("HubSpot send-photo submission failed", error);
 
     const missingHubSpotScopes =
       error instanceof HubSpotRequestError && error.status === 403;
