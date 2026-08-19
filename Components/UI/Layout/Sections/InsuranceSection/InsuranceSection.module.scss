@@ -10,10 +10,10 @@
 .wrapper {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(480px, 0.95fr);
-  gap: clamp(56px, 8vw, 112px);
+  gap: clamp(40px, 8vw, 80px);
   align-items: center;
   width: 100%;
-  max-width: 1160px;
+
   margin: 0 auto;
 
   @media (max-width: 1000px) {
@@ -23,7 +23,7 @@
 }
 
 .contentColumn {
-  max-width: 570px;
+ 
 }
 
 .eyebrow {
@@ -40,8 +40,8 @@
   max-width: 540px;
   margin-top: 18px !important;
   color: #ffffff !important;
-  font-size: clamp(2.7rem, 4.5vw, 4.15rem) !important;
-  line-height: 1.02 !important;
+  font-size: clamp(2.7rem, 4.5vw, 3.5rem) !important;
+  line-height: 1.1 !important;
   letter-spacing: -0.05em !important;
   text-wrap: balance;
 }
@@ -65,6 +65,46 @@
     color: #ffffff;
     font-weight: 700;
   }
+}
+
+.repairerCallout {
+  margin-top: 16px;
+  padding: clamp(16px, 3vw, 16px);
+  background: linear-gradient(180deg, rgba(39, 34, 20, 0.92), rgba(33, 29, 18, 0.98));
+  border: 1px solid rgba(246, 185, 26, 0.45);
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+.repairerCalloutHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  svg {
+    flex: 0 0 auto;
+    color: var(--brand-kowhai);
+    font-size: 2rem;
+  }
+}
+
+.repairerCalloutTitle {
+  margin: 0 !important;
+  color: var(--brand-kowhai) !important;
+  font-family: var(--font-prompt), "Segoe UI", sans-serif !important;
+  font-size: clamp(1.1rem, 2.2vw, 1.1rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  text-wrap: balance;
+}
+
+.repairerCalloutBody {
+  margin: 8px 0 0;
+  padding-left: calc(2rem + 16px);
+  color: #f2ede2;
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.65;
 }
 
 .ctaRow {
@@ -227,6 +267,26 @@
 }
 
 @media (max-width: 560px) {
+  .repairerCallout {
+    padding: 22px 20px;
+    border-radius: 20px;
+  }
+
+  .repairerCalloutHeader {
+    align-items: flex-start;
+    gap: 12px;
+
+    svg {
+      font-size: 1.8rem;
+      margin-top: 2px;
+    }
+  }
+
+  .repairerCalloutBody {
+    padding-left: 0;
+    margin-top: 14px;
+  }
+
   .cta {
     width: 100%;
     min-width: 0;

@@ -1,4 +1,5 @@
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
+import DirectionsCarFilledOutlinedIcon from "@mui/icons-material/DirectionsCarFilledOutlined";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Image from "next/image";
@@ -120,17 +121,40 @@ export default async function BookNowPage() {
                 </ul>
 
                 <div className={styles.trustStrip}>
-                  <div>
-                    <strong>Local team</strong>
-                    <span>Our own certified technicians</span>
+                  <div className={styles.trustItem}>
+                    <strong className={styles.trustHeading}>
+                      <DirectionsCarFilledOutlinedIcon aria-hidden="true" className={styles.trustMuiIcon} />
+                      Courtesy car
+                    </strong>
+                    <span>Available to help keep you moving</span>
                   </div>
-                  <div>
-                    <strong>{rating.average} ★ Google rating</strong>
+                  <div className={styles.trustItem}>
+                    <strong className={styles.trustHeading}>
+                      <Image
+                        src="/google.png"
+                        alt=""
+                        width={18}
+                        height={18}
+                        aria-hidden="true"
+                        className={styles.trustLogo}
+                      />
+                      {rating.average} Google rating
+                    </strong>
                     <span>Based on {rating.total}+ customer reviews</span>
                   </div>
-                  <div>
-                    <strong>Work guaranteed</strong>
-                    <span>We stand behind every job</span>
+                  <div className={styles.trustItem}>
+                    <strong className={styles.trustHeading}>
+                      <Image
+                        src="/winz-logo.png"
+                        alt=""
+                        width={48}
+                        height={18}
+                        aria-hidden="true"
+                        className={styles.trustLogoWide}
+                      />
+                      WINZ quotes
+                    </strong>
+                    <span>We can provide quotes for WINZ support</span>
                   </div>
                 </div>
               </div>

@@ -38,46 +38,46 @@ const ACCEPTED_FILE_TYPES = [
 ];
 
 const fieldSx = {
-  "& .MuiInputLabel-root": { color: "var(--light-on-surface-variant)" },
-  "& .MuiInputLabel-root.Mui-focused": { color: "var(--brand-kowhai)" },
+  "& .MuiInputLabel-root": { color: "#6f665a" },
+  "& .MuiInputLabel-root.Mui-focused": { color: "#c88b00" },
   "& .MuiOutlinedInput-root": {
-    color: "var(--light-on-surface)",
-    backgroundColor: "var(--light-surface-container-lowest)",
+    color: "#1f1a14",
+    backgroundColor: "#fffdfa",
     borderRadius: "10px",
-    "& fieldset": { borderColor: "var(--light-outline-variant)" },
-    "&:hover fieldset": { borderColor: "var(--light-outline)" },
-    "&.Mui-focused fieldset": { borderColor: "var(--brand-kowhai)" },
+    "& fieldset": { borderColor: "#d8d0c5" },
+    "&:hover fieldset": { borderColor: "#b9aa96" },
+    "&.Mui-focused fieldset": { borderColor: "#c88b00" },
   },
   "& .MuiFormHelperText-root": {
     marginLeft: "2px",
-    color: "var(--light-on-surface-variant)",
+    color: "#6f665a",
   },
-  "& .MuiFormHelperText-root.Mui-error": { color: "#ffb4ab" },
+  "& .MuiFormHelperText-root.Mui-error": { color: "#b3261e" },
   "& input[type='datetime-local']": {
     cursor: "pointer",
   },
   "& input[type='datetime-local']::-webkit-calendar-picker-indicator": {
-    filter: "invert(1) brightness(1.35)",
-    opacity: 0.86,
+    filter: "none",
+    opacity: 0.72,
     cursor: "pointer",
   },
 };
 
 const selectSx = {
-  color: "var(--light-on-surface)",
-  backgroundColor: "var(--light-surface-container-lowest)",
+  color: "#1f1a14",
+  backgroundColor: "#fffdfa",
   borderRadius: "10px",
   "& .MuiOutlinedInput-notchedOutline": {
-    borderColor: "var(--light-outline-variant)",
+    borderColor: "#d8d0c5",
   },
   "&:hover .MuiOutlinedInput-notchedOutline": {
-    borderColor: "var(--light-outline)",
+    borderColor: "#b9aa96",
   },
   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-    borderColor: "var(--brand-kowhai)",
+    borderColor: "#c88b00",
   },
   "& .MuiSelect-icon": {
-    color: "var(--light-on-surface)",
+    color: "#4d463d",
   },
 };
 
@@ -290,8 +290,8 @@ export default function SendPhotoForm({
           <InputLabel
             id="send-photo-service-label"
             sx={{
-              color: "var(--light-on-surface-variant)",
-              "&.Mui-focused": { color: "var(--brand-kowhai)" },
+              color: "#6f665a",
+              "&.Mui-focused": { color: "#c88b00" },
               "&.Mui-error": { color: "error.main" },
             }}
           >
@@ -309,8 +309,23 @@ export default function SendPhotoForm({
             MenuProps={{
               PaperProps: {
                 sx: {
-                  color: "var(--light-on-surface)",
-                  backgroundColor: "var(--light-surface-container-high)",
+                  color: "#1f1a14",
+                  backgroundColor: "#fffdfa",
+                  border: "1px solid #d8d0c5",
+                  boxShadow: "0 18px 40px rgba(61, 49, 32, 0.12)",
+                  "& .MuiMenuItem-root": {
+                    color: "#2b241d",
+                  },
+                  "& .MuiMenuItem-root.Mui-selected": {
+                    color: "#2b241d",
+                    backgroundColor: "#f7edd8",
+                  },
+                  "& .MuiMenuItem-root.Mui-selected:hover": {
+                    backgroundColor: "#f2e3bd",
+                  },
+                  "& .MuiMenuItem-root:hover": {
+                    backgroundColor: "#f9f2e4",
+                  },
                 },
               },
             }}

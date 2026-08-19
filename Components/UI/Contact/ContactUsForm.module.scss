@@ -4,20 +4,20 @@
   min-width: 0;
   margin-left: auto;
   overflow: hidden;
-  background: var(--light-surface-container);
-  border: 1px solid var(--light-outline-variant);
+  background: #ffffff;
+  border: 1px solid #ddd3c6;
   border-radius: 18px;
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 24px 60px rgba(56, 42, 24, 0.14);
 }
 
 .cardHeader {
   padding: 26px 28px 20px;
   text-align: left;
-  background: var(--light-surface-container-lowest);
+  background: linear-gradient(180deg, #fffaf1 0%, #f7f0e3 100%);
 
   h2 {
     margin-top: 7px;
-    color: var(--light-on-surface);
+    color: #1f1a14;
     font-family: var(--font-prompt), "Segoe UI", sans-serif;
     font-size: clamp(1.65rem, 3vw, 2rem);
     font-weight: 800;
@@ -26,7 +26,7 @@
 
   > p:last-child {
     margin-top: 7px;
-    color: var(--light-on-surface-variant);
+    color: #6f665a;
     font-family: var(--font-work-sans), "Segoe UI", sans-serif;
     font-size: 0.88rem;
   }
@@ -86,7 +86,7 @@
   align-items: flex-start;
   gap: 8px;
   margin-top: 12px;
-  color: var(--light-on-surface-variant);
+  color: #6f665a;
   font-family: var(--font-work-sans), "Segoe UI", sans-serif;
   font-size: 0.74rem;
   line-height: 1.45;

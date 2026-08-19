@@ -20,18 +20,18 @@ const initialValues = {
 };
 
 const fieldSx = {
-  "& .MuiInputLabel-root": { color: "var(--light-on-surface-variant)" },
-  "& .MuiInputLabel-root.Mui-focused": { color: "var(--brand-kowhai)" },
+  "& .MuiInputLabel-root": { color: "#6f665a" },
+  "& .MuiInputLabel-root.Mui-focused": { color: "#c88b00" },
   "& .MuiOutlinedInput-root": {
-    color: "var(--light-on-surface)",
-    backgroundColor: "var(--light-surface-container-lowest)",
+    color: "#1f1a14",
+    backgroundColor: "#fffdfa",
     borderRadius: "10px",
-    "& fieldset": { borderColor: "var(--light-outline-variant)" },
-    "&:hover fieldset": { borderColor: "var(--light-outline)" },
-    "&.Mui-focused fieldset": { borderColor: "var(--brand-kowhai)" },
+    "& fieldset": { borderColor: "#d8d0c5" },
+    "&:hover fieldset": { borderColor: "#b9aa96" },
+    "&.Mui-focused fieldset": { borderColor: "#c88b00" },
   },
-  "& .MuiFormHelperText-root": { marginLeft: "2px" },
-  "& .MuiFormHelperText-root.Mui-error": { color: "#ffb4ab" },
+  "& .MuiFormHelperText-root": { marginLeft: "2px", color: "#6f665a" },
+  "& .MuiFormHelperText-root.Mui-error": { color: "#b3261e" },
 };
 
 function validate(values) {

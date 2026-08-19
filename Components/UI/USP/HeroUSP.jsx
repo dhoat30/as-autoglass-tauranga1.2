@@ -10,17 +10,18 @@ export default function HeroUSP({
   inverted = false,
 }) {
   if (!data) return;
+  const textUspItems = Array.isArray(data?.text_usp) ? data.text_usp : [];
   return (
     <div
       className={`${className} ${styles.textUspContainer} ${
         inverted ? styles.inverted : ""
       } mt-24`}
     >
-      {(data.text_usp && data?.text_usp?.length > 0)
+      {(textUspItems.length > 0 || !inverted)
 
         &&
         <div className={`${styles.textUspWrapper} ${twoColumnsGrid && styles.twoColumnsGrid} flex align-center  usp-wrapper mb-16 `} style={{ justifyContent: centerAlign ? "center" : "flex-start" }} >
-          {data.text_usp.map((item, index) => {
+          {textUspItems.map((item, index) => {
 
             return (
               <Typography
@@ -38,6 +39,20 @@ export default function HeroUSP({
               </Typography>
             );
           })}
+          <Typography
+            variant="subtitle2"
+            component="div"
+            className={`flex align-center justify-center align-start mb-8 gap-4 ${styles.textUSP}`}
+          >
+            <span>Courtesy car available</span>
+          </Typography>
+          <Typography
+            variant="subtitle2"
+            component="div"
+            className={`flex align-center justify-center align-start mb-8 gap-4 ${styles.textUSP}`}
+          >
+            <span>WINZ Quotes</span>
+          </Typography>
         </div>
       }
 

@@ -48,8 +48,8 @@
   min-height: calc(100vh - 140px);
   padding: clamp(48px, 6vw, 88px) 0;
   background:
-    radial-gradient(circle at 8% 8%, rgba(246, 185, 26, 0.09), transparent 27rem),
-    var(--light-surface-container-low);
+    radial-gradient(circle at 8% 8%, rgba(246, 185, 26, 0.16), transparent 26rem),
+    linear-gradient(180deg, #fffdf8 0%, #f5efe4 100%);
 }
 
 .heroGrid {
@@ -77,7 +77,7 @@
 
 .title {
   margin-top: 16px;
-  color: var(--light-on-surface);
+  color: #1f1a14;
   font-family: var(--font-prompt), "Segoe UI", sans-serif;
   font-size: clamp(3rem, 5vw, 4.8rem);
   font-weight: 800;
@@ -93,7 +93,7 @@
 .lead {
   max-width: 590px;
   margin-top: 24px;
-  color: var(--light-on-surface-variant);
+  color: #5f5850;
   font-family: var(--font-work-sans), "Segoe UI", sans-serif;
   font-size: 1.08rem;
   line-height: 1.65;
@@ -108,7 +108,7 @@
   li {
     position: relative;
     padding-left: 28px;
-    color: var(--light-on-surface);
+    color: #2b241d;
     font-family: var(--font-work-sans), "Segoe UI", sans-serif;
     font-size: 0.92rem;
     font-weight: 650;
@@ -138,32 +138,49 @@
   gap: 0;
   margin-top: 34px;
   padding: 18px 0;
-  background: var(--light-surface-container);
-  border: 1px solid var(--light-outline-variant);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid #ddd3c6;
   border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(80, 62, 39, 0.06);
+}
 
-  > div {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 0 17px;
-    font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+.trustItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 17px;
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
 
-    &:not(:last-child) {
-      border-right: 1px solid var(--light-outline-variant);
-    }
+  &:not(:last-child) {
+    border-right: 1px solid #e3d9cd;
   }
+}
 
-  strong {
-    color: var(--light-on-surface);
-    font-size: 0.82rem;
-  }
+.trustHeading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #2b241d;
+  font-size: 0.82rem;
+}
 
-  span {
-    color: var(--light-on-surface-variant);
-    font-size: 0.72rem;
-    line-height: 1.35;
-  }
+.trustLogo,
+.trustLogoWide {
+  flex: 0 0 auto;
+  width: auto;
+  object-fit: contain;
+}
+
+.trustMuiIcon {
+  flex: 0 0 auto;
+  font-size: 1rem !important;
+  color: #c88b00;
+}
+
+.trustItem span {
+  color: #625b53;
+  font-size: 0.72rem;
+  line-height: 1.35;
 }
 
 .footer {
@@ -171,6 +188,7 @@
   background: var(--light-surface-container-lowest);
   font-family: var(--font-work-sans), "Segoe UI", sans-serif;
   font-size: 0.82rem;
+  border-top: 1px solid var(--light-outline-variant);
 }
 
 .footerInner {
@@ -223,12 +241,12 @@
   .trustStrip {
     padding: 4px 18px;
 
-    > div {
+    .trustItem {
       padding: 14px 0;
 
       &:not(:last-child) {
         border-right: 0;
-        border-bottom: 1px solid var(--light-outline-variant);
+        border-bottom: 1px solid #e3d9cd;
       }
     }
   }

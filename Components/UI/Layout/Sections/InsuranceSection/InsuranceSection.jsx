@@ -1,4 +1,5 @@
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -47,6 +48,20 @@ export default function InsuranceSection({
                 dangerouslySetInnerHTML={{ __html: description }}
               />
             )}
+
+            <div className={styles.repairerCallout}>
+              <div className={styles.repairerCalloutHeader}>
+                <CheckCircleOutlineRoundedIcon aria-hidden="true" />
+                <Typography component="h3" className={styles.repairerCalloutTitle}>
+                  You can choose your own repairer.
+                </Typography>
+              </div>
+              <p className={styles.repairerCalloutBody}>
+                With most policies you&apos;re not locked into your insurer&apos;s preferred
+                supplier - you&apos;re free to pick who works on your car. Just tell them
+                you&apos;re using AS Autoglass.
+              </p>
+            </div>
 
             {ctaLink?.url && (
               <div className={styles.ctaRow}>
