@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getHubSpotFormContext } from "@/utils/hubspotFormContext";
 import { sendLeadNotification } from "@/utils/sendLeadNotification";
+import { formatBookingDate, getBookingDateError } from "@/utils/bookingDate";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -210,19 +211,15 @@ async function uploadPhoto(photo, token) {
 }
 
 function buildNoteBody(fields, photo) {
-  const bookingDateTime = fields.booking_date__time
-    ? new Intl.DateTimeFormat("en-NZ", {
-        dateStyle: "full",
-        timeStyle: "short",
-        timeZone: "Pacific/Auckland",
-      }).format(new Date(fields.booking_date__time))
+  const bookingDate = fields.booking_date__time
+    ? formatBookingDate(fields.booking_date__time)
     : "Not requested";
   const rows = [
     ["Service", fields.services_required],
     ["Vehicle registration", fields.registration || "Not provided"],
     ["Phone", fields.phone],
     ["Email", fields.email],
-    ["Preferred date and time", bookingDateTime],
+    ["Preferred date", bookingDate],
     ["Message", fields.message || "No additional message"],
     ["Original photo name", photo?.name || "No photo provided"],
     ["Landing page", fields.pageUri || "/send-photo"],
@@ -277,16 +274,8 @@ function validateSubmission(fields, photo) {
   if (!/^[+\d][\d\s()-]{7,}$/.test(fields.phone)) return "Enter a valid phone number.";
   if (!/^\S+@\S+\.\S+$/.test(fields.email)) return "Enter a valid email address.";
   // A preferred date is optional; only a supplied value has to make sense.
-  if (fields.booking_date__time) {
-    const preferredTime = new Date(fields.booking_date__time).getTime();
-    if (Number.isNaN(preferredTime)) {
-      return "Choose a valid preferred date and time.";
-    }
-    const currentMinute = Math.floor(Date.now() / 60000) * 60000;
-    if (preferredTime < currentMinute) {
-      return "Choose the current time or a future date and time.";
-    }
-  }
+  const dateError = getBookingDateError(fields.booking_date__time);
+  if (dateError) return dateError;
   if (photo) {
     if (!ACCEPTED_FILE_TYPES.has(photo.type)) return "Use a supported image format.";
     if (photo.size > MAX_FILE_SIZE) return "The photo must be smaller than 10 MB.";
@@ -325,15 +314,17 @@ export async function POST(request) {
       );
     }
 
-    const readableBookingTime = fields.booking_date__time
-      ? new Intl.DateTimeFormat("en-NZ", {
-          dateStyle: "full",
-          timeStyle: "short",
-          timeZone: "Pacific/Auckland",
-        }).format(new Date(fields.booking_date__time))
+    if (fields.booking_date__time) {
+      // Keep the existing HubSpot datetime property while preserving the chosen
+      // calendar date. No appointment time is requested by this form.
+      fields.booking_date__time = `${fields.booking_date__time}T00:00:00.000Z`;
+    }
+
+    const readableBookingDate = fields.booking_date__time
+      ? formatBookingDate(fields.booking_date__time)
       : "";
-    fields.hubspotMessage = readableBookingTime
-      ? `Preferred date and time: ${readableBookingTime}\n\n${fields.message || "No additional message"}`
+    fields.hubspotMessage = readableBookingDate
+      ? `Preferred date: ${readableBookingDate}\n\n${fields.message || "No additional message"}`
       : fields.message;
 
     const token = process.env.HUBSPOT_PRIVATE_APP_TOKEN || process.env.HUBSPOT_API_KEY;
@@ -420,7 +411,7 @@ export async function POST(request) {
           `Phone: ${fields.phone}`,
           `Service: ${fields.services_required}`,
           `Vehicle registration: ${fields.registration || "Not provided"}`,
-          `Preferred date and time: ${readableBookingTime || "Not requested"}`,
+          `Preferred date: ${readableBookingDate || "Not requested"}`,
           `Message: ${fields.message || "Not provided"}`,
           `Page: ${fields.pageUri || (isBooking ? "/book-now" : "/send-photo")}`,
           "",
@@ -438,17 +429,17 @@ export async function POST(request) {
           "",
           isBooking
             ? `Thanks for requesting a booking with AS Autoglass. We’ve received your details${photo ? " and photo" : ""}. ${
-                readableBookingTime
-                  ? "Your requested time is not confirmed yet—our local team will contact you to confirm availability."
-                  : "Our local team will contact you to arrange a time that suits you."
+                readableBookingDate
+                  ? "Your requested date is not confirmed yet—our local team will contact you to confirm availability and arrange a time."
+                  : "Our local team will contact you to arrange a date and time that suits you."
               }`
             : photo
               ? "Thanks for sending your photo to AS Autoglass. Our local team will review it and contact you with honest advice on the right next step."
               : "Thanks for your enquiry to AS Autoglass. Our local team will review your details and contact you with honest advice on the right next step.",
           "",
           `Service: ${fields.services_required}`,
-          ...(isBooking && readableBookingTime
-            ? [`Preferred date and time: ${readableBookingTime}`]
+          ...(isBooking && readableBookingDate
+            ? [`Preferred date: ${readableBookingDate}`]
             : []),
           `Vehicle registration: ${fields.registration || "Not provided"}`,
           "",

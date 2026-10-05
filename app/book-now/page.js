@@ -1,5 +1,7 @@
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import DirectionsCarFilledOutlinedIcon from "@mui/icons-material/DirectionsCarFilledOutlined";
+import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
+import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Image from "next/image";
@@ -12,18 +14,51 @@ import { getPageUrl, siteName } from "@/site.config";
 import { getOptions } from "@/utils/fetchData";
 import { DEFAULT_OG_IMAGE } from "@/utils/seo";
 import styles from "../send-photo/page.module.scss";
+import bookingStyles from "./page.module.scss";
 
 const PAGE_URL = getPageUrl("/book-now");
+const BOOKING_FAQS = [
+  {
+    question: "Is my booking confirmed when I submit the form?",
+    answer:
+      "Your form sends a booking request. Our Tauranga team will contact you during business hours to confirm the service, your quote and availability before the appointment is booked. If you need help urgently, please call us.",
+  },
+  {
+    question: "Do you offer mobile service in my area?",
+    answer:
+      "We offer mobile autoglass service across Tauranga and the Western Bay of Plenty, including Mount Maunganui, Papamoa and Te Puke. Tell us your suburb in the optional details, or call us to check availability at your home or workplace.",
+  },
+  {
+    question: "Can you help with an insurance claim?",
+    answer:
+      "Yes, we can help manage your autoglass insurance claim. Let us know you would like to use insurance when we contact you. Cover, excess and approval depend on your policy and insurer.",
+  },
+  {
+    question: "How much will my repair or replacement cost?",
+    answer:
+      "The cost depends on your vehicle, the damage and the service needed. We’ll confirm your quote before you agree to any work. You can add your registration and a photo to help us assess what’s needed.",
+  },
+  {
+    question: "How soon can you do the work?",
+    answer:
+      "Availability depends on the service and any parts your vehicle needs. You can suggest a preferred date, or leave it blank and we’ll suggest an available appointment. For urgent damage, call our team directly.",
+  },
+  {
+    question: "Do I need to upload a photo or choose a date?",
+    answer:
+      "No. Your photo, registration, extra details and preferred date are all optional. Choose the service you need and provide your contact details—we’ll help with the rest. Select ‘Not sure—I need advice’ if you’re unsure which service to book.",
+  },
+];
 
 export const metadata = {
   title: `Book an Autoglass Service in Tauranga | ${siteName}`,
   description:
-    "Request a convenient time for windscreen replacement, chip repair, ADAS recalibration, or headlight restoration with AS Autoglass.",
+    "Request a convenient date for windscreen replacement, chip repair, ADAS recalibration, or headlight restoration with AS Autoglass.",
   alternates: { canonical: PAGE_URL },
   openGraph: {
     title: "Book Your Autoglass Service",
     description:
-      "Choose a preferred time and send us the details. Our Tauranga team will confirm your booking directly.",
+      "Choose a preferred date and send us the details. Our Tauranga team will confirm your booking directly.",
     url: PAGE_URL,
     type: "website",
     images: [DEFAULT_OG_IMAGE],
@@ -71,7 +106,7 @@ export default async function BookNowPage() {
   };
 
   return (
-    <>
+    <div className={bookingStyles.page}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
@@ -97,29 +132,58 @@ export default async function BookNowPage() {
       </header>
 
       <main>
-        <section className={styles.main}>
+        <section className={bookingStyles.hero}>
           <Container maxWidth="lg">
-            <div className={`${styles.heroGrid} ${styles.topAlignedHeroGrid}`}>
-              <div className={styles.content}>
-                <p className={`${styles.eyebrow} eyebrow-text`}>
-                  Local mobile autoglass booking
+            <div className={bookingStyles.heroGrid}>
+              <div className={bookingStyles.intro}>
+                <p className={bookingStyles.eyebrow}>
+                  Mobile service · Tauranga & Western Bay
                 </p>
-                <h1 className={styles.title}>
-                  Choose a time. <span>We’ll take care of the glass.</span>
+                <h1 className={bookingStyles.title}>
+                  Windscreen repair & replacement <span>in Tauranga.</span>
                 </h1>
-                <p className={styles.lead}>
-                  Tell us what your vehicle needs, choose a preferred date and
-                  time, and send a photo so our technicians can arrive prepared.
-                  We’ll contact you to confirm availability.
+                <p className={bookingStyles.lead}>
+                  Book mobile service at your home or workplace. Request a date
+                  that suits you—our local team will confirm availability and
+                  your quote.
                 </p>
+                <div className={bookingStyles.heroActions}>
+                  <Button
+                    href="#booking-form"
+                    variant="contained"
+                    size="large"
+                    endIcon={<ArrowForwardRoundedIcon />}
+                    className={bookingStyles.bookButton}
+                  >
+                    Request a booking
+                  </Button>
+                  <span>No obligation · Quote before any work</span>
+                </div>
+                <p className={bookingStyles.rating}>
+                  <Image src="/google.png" alt="Google" width={20} height={20} />
+                  <strong>{rating.average}/5</strong> from {rating.total}+ customer reviews
+                </p>
+              </div>
 
+              <div className={bookingStyles.bookingForm}>
+                <SendPhotoForm
+                  phone={phone}
+                  phoneUrl={phoneUrl}
+                  bookingMode
+                  formTitle="Request your booking"
+                  formDescription="Tell us what you need—we’ll confirm your quote and booking."
+                  submitLabel="Request my booking"
+                />
+              </div>
+
+              <div className={bookingStyles.benefits}>
+                <h2>Local service, clear advice.</h2>
                 <ul className={styles.benefits}>
-                  <li>Book replacement, repair, recalibration or headlight work</li>
                   <li>Mobile service at your home or workplace</li>
-                  <li>Choose the date and time that suits you</li>
-                  <li>Your booking is confirmed directly by our local team</li>
+                  <li>Help managing your insurance claim</li>
+                  <li>ADAS camera recalibration and headlight restoration</li>
+                  <li>Not sure what you need? Our team can help</li>
                 </ul>
-
                 <div className={styles.trustStrip}>
                   <div className={styles.trustItem}>
                     <strong className={styles.trustHeading}>
@@ -130,17 +194,10 @@ export default async function BookNowPage() {
                   </div>
                   <div className={styles.trustItem}>
                     <strong className={styles.trustHeading}>
-                      <Image
-                        src="/google.png"
-                        alt=""
-                        width={18}
-                        height={18}
-                        aria-hidden="true"
-                        className={styles.trustLogo}
-                      />
-                      {rating.average} Google rating
+                      <VerifiedUserOutlinedIcon aria-hidden="true" className={styles.trustMuiIcon} />
+                      Insurance help
                     </strong>
-                    <span>Based on {rating.total}+ customer reviews</span>
+                    <span>Support with your autoglass claim</span>
                   </div>
                   <div className={styles.trustItem}>
                     <strong className={styles.trustHeading}>
@@ -158,20 +215,35 @@ export default async function BookNowPage() {
                   </div>
                 </div>
               </div>
-
-              <SendPhotoForm
-                phone={phone}
-                phoneUrl={phoneUrl}
-                bookingMode
-                formTitle="Request your booking"
-                formDescription="Choose a preferred time—we’ll confirm it with you directly."
-                submitLabel="Request my booking"
-              />
             </div>
           </Container>
         </section>
 
         <GoogleReviewsCarousel data={reviewsData} />
+
+        <section className={bookingStyles.faqSection} aria-labelledby="booking-faq-title">
+          <Container maxWidth="lg">
+            <div className={bookingStyles.faqLayout}>
+              <div className={bookingStyles.faqIntro}>
+                <p className={bookingStyles.eyebrow}>Before you book</p>
+                <h2 id="booking-faq-title">Your questions, answered.</h2>
+                <p>Clear advice before you commit. Call our local team if you’d prefer to talk it through.</p>
+                <a href={phoneUrl} className={bookingStyles.faqPhone}>
+                  <LocalPhoneOutlinedIcon aria-hidden="true" />
+                  {phone}
+                </a>
+              </div>
+              <div className={bookingStyles.faqList}>
+                {BOOKING_FAQS.map(({ question, answer }) => (
+                  <details className={bookingStyles.faqItem} key={question}>
+                    <summary>{question}</summary>
+                    <p>{answer}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </Container>
+        </section>
 
         {gallery.length > 0 && (
           <GallerySection
@@ -183,14 +255,46 @@ export default async function BookNowPage() {
             filteredLimit={6}
           />
         )}
+
+        <section className={bookingStyles.closingCta} aria-labelledby="booking-cta-title">
+          <Container maxWidth="lg" className={bookingStyles.closingCtaInner}>
+            <div>
+              <h2 id="booking-cta-title">Let’s get your glass sorted.</h2>
+              <p>Request a booking—we’ll confirm your quote and a date that suits.</p>
+            </div>
+            <Button
+              href="#booking-form"
+              variant="contained"
+              size="large"
+              endIcon={<ArrowForwardRoundedIcon />}
+              className={bookingStyles.bookButton}
+            >
+              Request a booking
+            </Button>
+          </Container>
+        </section>
       </main>
 
       <footer className={styles.footer}>
         <Container maxWidth="lg" className={styles.footerInner}>
-          <span>© {new Date().getFullYear()} AS Autoglass</span>
+          <div className={bookingStyles.footerDetails}>
+            <span>© {new Date().getFullYear()} AS Autoglass</span>
+            <span>64A Maleme Street, Greerton, Tauranga · Mon–Fri, 8am–5pm</span>
+          </div>
           <Link href="/privacy-policy">Privacy policy</Link>
         </Container>
       </footer>
-    </>
+
+      <nav className={bookingStyles.mobileActions} aria-label="Call or request a booking">
+        <a href={phoneUrl} className={bookingStyles.mobileCall}>
+          <LocalPhoneOutlinedIcon aria-hidden="true" />
+          Call our team
+        </a>
+        <a href="#booking-form" className={bookingStyles.mobileBook}>
+          Request a booking
+          <ArrowForwardRoundedIcon aria-hidden="true" />
+        </a>
+      </nav>
+    </div>
   );
 }

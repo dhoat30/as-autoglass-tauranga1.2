@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -18,6 +18,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import { useRouter } from "next/navigation";
+import { getBookingDateError, getMinimumBookingDate } from "@/utils/bookingDate";
 import styles from "./SendPhotoForm.module.scss";
 
 const SERVICE_OPTIONS = [
@@ -53,10 +54,10 @@ const fieldSx = {
     color: "#6f665a",
   },
   "& .MuiFormHelperText-root.Mui-error": { color: "#b3261e" },
-  "& input[type='datetime-local']": {
+  "& input[type='date']": {
     cursor: "pointer",
   },
-  "& input[type='datetime-local']::-webkit-calendar-picker-indicator": {
+  "& input[type='date']::-webkit-calendar-picker-indicator": {
     filter: "none",
     opacity: 0.72,
     cursor: "pointer",
@@ -90,26 +91,7 @@ function getPhotoError(file) {
   return "";
 }
 
-function getPreferredDateTimeError(value) {
-  if (!value) return "";
-
-  const selectedTime = new Date(value).getTime();
-  if (Number.isNaN(selectedTime)) return "Choose a valid date and time.";
-  const currentMinute = Math.floor(Date.now() / 60000) * 60000;
-  if (selectedTime < currentMinute) {
-    return "Choose the current time or a future date and time.";
-  }
-
-  return "";
-}
-
-function getLocalDateTimeMinimum() {
-  const now = new Date();
-  const localTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
-  return localTime.toISOString().slice(0, 16);
-}
-
-function validate(values, validatePreferredDateTime = false) {
+function validate(values, validatePreferredDate = false) {
   const errors = {};
   if (!values.services_required) {
     errors.services_required = "Choose the service you need—or select ‘Not sure’.";
@@ -122,9 +104,9 @@ function validate(values, validatePreferredDateTime = false) {
     errors.email = "Enter a valid email address.";
   }
   // The field is optional, so this only rejects a supplied value that is invalid.
-  if (validatePreferredDateTime) {
-    const dateTimeError = getPreferredDateTimeError(values.booking_date__time);
-    if (dateTimeError) errors.booking_date__time = dateTimeError;
+  if (validatePreferredDate) {
+    const dateError = getBookingDateError(values.booking_date__time);
+    if (dateError) errors.booking_date__time = dateError;
   }
   const photoError = getPhotoError(values.windscreen_photo);
   if (photoError) errors.windscreen_photo = photoError;
@@ -156,7 +138,10 @@ export default function SendPhotoForm({
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [minimumDateTime, setMinimumDateTime] = useState("");
+  const [minimumDate, setMinimumDate] = useState("");
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const submissionInFlight = useRef(false);
+  const formRef = useRef(null);
 
   const previewUrl = useMemo(
     () =>
@@ -171,7 +156,7 @@ export default function SendPhotoForm({
   }, [previewUrl]);
 
   useEffect(() => {
-    const updateMinimum = () => setMinimumDateTime(getLocalDateTimeMinimum());
+    const updateMinimum = () => setMinimumDate(getMinimumBookingDate());
     updateMinimum();
     const timer = window.setInterval(updateMinimum, 60000);
 
@@ -222,6 +207,8 @@ export default function SendPhotoForm({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (submissionInFlight.current) return;
+
     const nextErrors = validate(values, bookingMode);
     setTouched({
       services_required: true,
@@ -235,20 +222,27 @@ export default function SendPhotoForm({
     setErrors(nextErrors);
     setSubmitError("");
 
-    if (Object.keys(nextErrors).length > 0) return;
+    if (Object.keys(nextErrors).length > 0) {
+      if (nextErrors.registration || nextErrors.windscreen_photo) {
+        setDetailsOpen(true);
+      }
+      // Wait for the error fields and any collapsed details to render.
+      requestAnimationFrame(() => {
+        formRef.current?.querySelector('[aria-invalid="true"]')?.focus();
+      });
+      return;
+    }
 
     const payload = new FormData();
     Object.entries(values).forEach(([key, value]) => {
       if (value === null) return;
 
-      if (key === "booking_date__time" && value) {
-        payload.append(key, new Date(value).toISOString());
-        return;
-      }
-
       payload.append(key, value);
     });
     payload.append("pageUri", window.location.href);
+
+    submissionInFlight.current = true;
+    let submitted = false;
 
     try {
       setSubmitting(true);
@@ -258,33 +252,61 @@ export default function SendPhotoForm({
       });
       const result = await response.json().catch(() => ({}));
 
-      if (!response.ok) {
-        throw new Error(result.message || "We couldn’t send your photo. Please try again.");
+      if (!response.ok || result.success !== true) {
+        throw new Error(result.message || "We couldn’t send your request. Please try again.");
+      }
+
+      submitted = true;
+
+      if (!values.website) {
+        try {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: "form_submission",
+            form_id: bookingMode ? "book_now" : "send_photo",
+            form_name: bookingMode ? "Book Now" : "Send Photo",
+            submission_type: values.submission_type,
+            service: values.services_required,
+            page_path: window.location.pathname,
+            photo_attached: Boolean(values.windscreen_photo),
+          });
+        } catch {
+          // A tracking failure must not turn an accepted request into an error.
+        }
       }
 
       router.push("/form-submitted/thank-you");
     } catch (error) {
       setSubmitError(
-        error.message || `We couldn’t send your photo. Please call us on ${phone}.`,
+        error.message || `We couldn’t send your request. Please call us on ${phone}.`,
       );
     } finally {
-      setSubmitting(false);
+      if (!submitted) {
+        submissionInFlight.current = false;
+        setSubmitting(false);
+      }
     }
   };
 
   return (
-    <aside className={styles.card} aria-labelledby="send-photo-form-title">
+    <aside
+      id={bookingMode ? "booking-form" : "send-photo-form"}
+      className={styles.card}
+      aria-labelledby="send-photo-form-title"
+      tabIndex={-1}
+    >
       <div className={styles.cardHeader}>
         <h2 id="send-photo-form-title">{formTitle}</h2>
         <p>{formDescription}</p>
       </div>
       <div className={styles.promiseBar}>Fast reply · Honest advice · No obligation</div>
 
-      <Box component="form" className={styles.form} onSubmit={handleSubmit} noValidate>
+      <Box component="form" ref={formRef} className={styles.form} onSubmit={handleSubmit} noValidate>
         {submitError && <Alert severity="error">{submitError}</Alert>}
 
         <FormControl
           fullWidth
+          required
           error={Boolean(touched.services_required && errors.services_required)}
         >
           <InputLabel
@@ -383,24 +405,10 @@ export default function SendPhotoForm({
           sx={fieldSx}
         />
 
-        <TextField
-          label="Vehicle registration (optional)"
-          value={values.registration}
-          onChange={(event) =>
-            updateField("registration", event.target.value.toUpperCase())
-          }
-          onBlur={() => touchField("registration")}
-          error={Boolean(touched.registration && errors.registration)}
-          helperText={touched.registration && errors.registration}
-          fullWidth
-          sx={fieldSx}
-          slotProps={{ htmlInput: { maxLength: 12 } }}
-        />
-
         {bookingMode && (
           <TextField
-            label="Preferred date and time (optional)"
-            type="datetime-local"
+            label="Preferred date (optional)"
+            type="date"
             value={values.booking_date__time}
             onChange={(event) =>
               updateField("booking_date__time", event.target.value)
@@ -411,15 +419,14 @@ export default function SendPhotoForm({
             )}
             helperText={
               (touched.booking_date__time && errors.booking_date__time) ||
-              "Leave this blank and we’ll suggest a time that suits you."
+              "Leave this blank and we’ll suggest an available date."
             }
             fullWidth
             sx={fieldSx}
             slotProps={{
               inputLabel: { shrink: true },
               htmlInput: {
-                min: minimumDateTime,
-                step: 60,
+                min: minimumDate,
                 onClick: (event) => {
                   try {
                     event.currentTarget.showPicker?.();
@@ -432,54 +439,88 @@ export default function SendPhotoForm({
           />
         )}
 
-        <TextField
-          label="Anything else we should know? (optional)"
-          value={values.message}
-          onChange={(event) => updateField("message", event.target.value)}
-          multiline
-          minRows={2}
-          fullWidth
-          sx={fieldSx}
-          slotProps={{ htmlInput: { maxLength: 1000 } }}
-        />
+        {bookingMode && (
+          <button
+            type="button"
+            className={styles.detailsToggle}
+            aria-expanded={detailsOpen}
+            aria-controls="booking-extra-details"
+            onClick={() => setDetailsOpen((open) => !open)}
+          >
+            <span>{detailsOpen ? "Hide extra details" : "Add vehicle details or a photo"}</span>
+            <span className={styles.optionalLabel}>Optional</span>
+            <span aria-hidden="true">{detailsOpen ? "−" : "+"}</span>
+          </button>
+        )}
 
-        <FormControl
-          error={Boolean(touched.windscreen_photo && errors.windscreen_photo)}
+        <div
+          id={bookingMode ? "booking-extra-details" : undefined}
+          className={styles.extraDetails}
+          hidden={bookingMode && !detailsOpen}
         >
-          <span className={styles.uploadLabel}>
-            Photo of the damage or vehicle (optional)
-          </span>
-          {previewUrl ? (
-            <div className={styles.preview}>
-              <img src={previewUrl} alt="Selected vehicle damage" />
-              <div className={styles.previewMeta}>
-                <span>{values.windscreen_photo.name}</span>
-                <small>
-                  {(values.windscreen_photo.size / 1024 / 1024).toFixed(1)} MB
-                </small>
+          <TextField
+            label="Vehicle registration (optional)"
+            value={values.registration}
+            onChange={(event) =>
+              updateField("registration", event.target.value.toUpperCase())
+            }
+            onBlur={() => touchField("registration")}
+            error={Boolean(touched.registration && errors.registration)}
+            helperText={touched.registration && errors.registration}
+            fullWidth
+            sx={fieldSx}
+            slotProps={{ htmlInput: { maxLength: 12 } }}
+          />
+
+          <TextField
+            label="Anything else we should know? (optional)"
+            value={values.message}
+            onChange={(event) => updateField("message", event.target.value)}
+            multiline
+            minRows={2}
+            fullWidth
+            sx={fieldSx}
+            slotProps={{ htmlInput: { maxLength: 1000 } }}
+          />
+
+          <FormControl
+            error={Boolean(touched.windscreen_photo && errors.windscreen_photo)}
+          >
+            <span className={styles.uploadLabel}>
+              Photo of the damage or vehicle (optional)
+            </span>
+            {previewUrl ? (
+              <div className={styles.preview}>
+                <img src={previewUrl} alt="Selected vehicle damage" />
+                <div className={styles.previewMeta}>
+                  <span>{values.windscreen_photo.name}</span>
+                  <small>
+                    {(values.windscreen_photo.size / 1024 / 1024).toFixed(1)} MB
+                  </small>
+                </div>
+                <IconButton onClick={removePhoto} aria-label="Remove selected photo">
+                  <DeleteOutlineIcon />
+                </IconButton>
               </div>
-              <IconButton onClick={removePhoto} aria-label="Remove selected photo">
-                <DeleteOutlineIcon />
-              </IconButton>
-            </div>
-          ) : (
-            <Box component="label" className={styles.uploadBox}>
-              <CloudUploadOutlinedIcon aria-hidden="true" />
-              <span>
-                <strong>Choose a photo</strong>
-                <small>JPG, PNG, WebP or HEIC · max 10 MB</small>
-              </span>
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif"
-                onChange={handlePhoto}
-              />
-            </Box>
-          )}
-          <FormHelperText>
-            {touched.windscreen_photo && errors.windscreen_photo}
-          </FormHelperText>
-        </FormControl>
+            ) : (
+              <Box component="label" className={styles.uploadBox}>
+                <CloudUploadOutlinedIcon aria-hidden="true" />
+                <span>
+                  <strong>Choose a photo</strong>
+                  <small>JPG, PNG, WebP or HEIC · max 10 MB</small>
+                </span>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif"
+                  onChange={handlePhoto}
+                />
+              </Box>
+            )}
+            <FormHelperText>
+              {touched.windscreen_photo && errors.windscreen_photo}
+            </FormHelperText>
+          </FormControl>
+        </div>
 
         <input
           type="text"
@@ -513,6 +554,12 @@ export default function SendPhotoForm({
           <LockOutlinedIcon aria-hidden="true" />
           Your photo and details are kept private and only used to assess your enquiry.
         </p>
+        {bookingMode && (
+          <p className={styles.responseNote}>
+            We’ll contact you during business hours to confirm your quote and
+            availability. Need help sooner? Call our local team.
+          </p>
+        )}
       </Box>
     </aside>
   );

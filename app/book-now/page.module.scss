@@ -1,0 +1,348 @@
+.page {
+  background: var(--light-background);
+}
+
+.hero {
+  padding: clamp(40px, 5vw, 72px) 0;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(246, 185, 26, 0.16), transparent 26rem),
+    linear-gradient(180deg, #fffdf8 0%, #f5efe4 100%);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(440px, 0.95fr);
+  grid-template-areas:
+    "intro form"
+    "benefits form";
+  align-items: start;
+  gap: 32px clamp(36px, 6vw, 80px);
+}
+
+.intro {
+  grid-area: intro;
+}
+
+.bookingForm {
+  grid-area: form;
+  min-width: 0;
+}
+
+.eyebrow {
+  color: #745500;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.title {
+  margin-top: 16px;
+  color: #1f1a14;
+  font-family: var(--font-prompt), "Segoe UI", sans-serif;
+  font-size: clamp(2.5rem, 3.7vw, 3.65rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+
+  span {
+    color: #745500;
+  }
+}
+
+.lead {
+  margin-top: 20px;
+  color: #5f5850;
+  font-size: 1.02rem;
+  line-height: 1.6;
+}
+
+.heroActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 24px;
+
+  > span {
+    color: #625b53;
+    font-size: 0.78rem;
+  }
+}
+
+.bookButton {
+  min-height: 50px !important;
+  padding: 12px 22px !important;
+  color: #1c1500 !important;
+  background: var(--brand-kowhai) !important;
+  font-weight: 800 !important;
+
+  &:hover {
+    background: var(--brand-kowhai-bright) !important;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #745500;
+    outline-offset: 4px;
+  }
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 20px;
+  color: #514a40;
+  font-size: 0.83rem;
+
+  img {
+    margin-right: 3px;
+  }
+}
+
+.benefits {
+  grid-area: benefits;
+
+  h2 {
+    color: #2b241d;
+    font-family: var(--font-prompt), "Segoe UI", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+
+  ul {
+    margin-top: 18px;
+  }
+}
+
+.faqSection {
+  padding: clamp(48px, 6vw, 80px) 0;
+  color: #2b241d;
+  background: #fffdf8;
+}
+
+.faqLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 80px);
+}
+
+.faqIntro {
+  h2 {
+    margin-top: 12px;
+    color: #1f1a14;
+    font-family: var(--font-prompt), "Segoe UI", sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+  }
+
+  > p:not(.eyebrow) {
+    margin-top: 18px;
+    color: #625b53;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+}
+
+.faqPhone {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  margin-top: 14px;
+  color: #745500;
+  font-weight: 800;
+}
+
+.faqList {
+  border-top: 1px solid #ddd3c6;
+}
+
+.faqItem {
+  border-bottom: 1px solid #ddd3c6;
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: 64px;
+    padding: 18px 0;
+    color: #2b241d;
+    font-size: 0.97rem;
+    font-weight: 700;
+    line-height: 1.4;
+    list-style: none;
+    cursor: pointer;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      content: "+";
+      flex: 0 0 auto;
+      color: #745500;
+      font-size: 1.4rem;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #745500;
+      outline-offset: 3px;
+    }
+  }
+
+  &[open] summary::after {
+    content: "−";
+  }
+
+  > p {
+    padding-bottom: 22px;
+    color: #625b53;
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+}
+
+.closingCta {
+  padding: 48px 0;
+  color: #2b241d;
+  background: #f5efe4;
+}
+
+.closingCtaInner {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+
+  h2 {
+    font-family: var(--font-prompt), "Segoe UI", sans-serif;
+    font-size: clamp(1.6rem, 2.7vw, 2rem);
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  p {
+    margin-top: 12px;
+    color: #625b53;
+    line-height: 1.6;
+  }
+}
+
+.footerDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 16px 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.mobileActions {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .heroGrid {
+    max-width: 700px;
+    margin: 0 auto;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "intro"
+      "form"
+      "benefits";
+  }
+
+  .title {
+    font-size: clamp(2.15rem, 5.5vw, 3.4rem);
+  }
+
+  .faqLayout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .page {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+
+  .hero {
+    padding-top: 32px;
+  }
+
+  .title {
+    margin-top: 12px;
+    font-size: clamp(2rem, 8.5vw, 2.7rem);
+  }
+
+  .lead {
+    margin-top: 16px;
+    font-size: 0.98rem;
+  }
+
+  .heroActions {
+    align-items: stretch;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .closingCtaInner {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .mobileActions {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 10px;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: #fffdf8;
+    border-top: 1px solid #ddd3c6;
+    box-shadow: 0 -8px 24px rgba(56, 42, 24, 0.08);
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 50px;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 0.83rem;
+      font-weight: 800;
+
+      &:focus-visible {
+        outline: 2px solid #745500;
+        outline-offset: 3px;
+      }
+    }
+
+    svg {
+      flex: 0 0 auto;
+      font-size: 18px;
+    }
+  }
+
+  .mobileCall {
+    color: #2b241d;
+    border: 1px solid #c6b9a6;
+  }
+
+  .mobileBook {
+    color: #1c1500;
+    background: var(--brand-kowhai);
+  }
+}

@@ -1,4 +1,5 @@
 .card {
+  scroll-margin-top: 24px;
   width: 100%;
   max-width: 560px;
   margin-left: auto;
@@ -51,6 +52,59 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+}
+
+.extraDetails {
+  display: grid;
+  gap: 16px;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.detailsToggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px;
+  color: #2b241d;
+  background: #fffaf1;
+  border: 1px solid #ddd3c6;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+
+  > span:last-child {
+    margin-left: auto;
+    font-size: 1.25rem;
+  }
+
+  &:hover {
+    background: #f7edd8;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #745500;
+    outline-offset: 3px;
+  }
+}
+
+.optionalLabel {
+  color: #6f665a;
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.responseNote {
+  color: #6f665a;
+  font-size: 0.78rem;
+  line-height: 1.5;
 }
 
 .uploadLabel {
