@@ -73,6 +73,33 @@
   letter-spacing: -0.025em;
 }
 
+.socialWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid var(--light-outline-variant);
+  border-radius: 8px;
+  color: var(--light-on-surface);
+  font-family: var(--font-work-sans), "Segoe UI", sans-serif;
+  font-size: 0.86rem;
+  transition: color 160ms ease, border-color 160ms ease;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--brand-kowhai);
+    border-color: var(--brand-kowhai);
+  }
+}
+
 .heroUspWrapper {
  
 }

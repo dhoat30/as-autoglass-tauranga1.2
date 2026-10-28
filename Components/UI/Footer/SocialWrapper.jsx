@@ -1,36 +1,52 @@
-import React from 'react'
-import styles from './Footer.module.scss'
-import Typography from "@mui/material/Typography";
-import Link from "next/link";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
 import Image from "next/image";
-export default function SocialWrapper({socialData}) {
+import styles from "./Footer.module.scss";
+
+const SOCIAL_LINKS = [
+  {
+    social_media_name: "Facebook",
+    link: "https://www.facebook.com/people/AS-Auto-Glass-Tauranga/61580122882962/",
+    Icon: FacebookIcon,
+  },
+  {
+    social_media_name: "Instagram",
+    link: "https://www.instagram.com/glassasauto/",
+    Icon: InstagramIcon,
+  },
+];
+
+export default function SocialWrapper({ socialData = [] }) {
+  const links = [
+    ...SOCIAL_LINKS,
+    ...(socialData || []).filter(
+      (social) =>
+        social.link &&
+        !/facebook|instagram/i.test(
+          `${social.social_media_name} ${social.link}`,
+        ),
+    ),
+  ];
+
   return (
-    <div className={`${styles.socialWrapper}`}>
-    <Typography variant="subtitle1" component="div">
-      Follow Us
-    </Typography>
-    <div className={`${styles.socialLinks} mt-8 flex gap-8 flex-wrap`}>
-      {socialData &&
-        socialData.length > 0 &&
-        socialData.map((social, index) => {
-          return (
-            <Link
-              key={index}
-              aria-label={social.social_media_name}
-              href={social.link}
-              target="_blank"
-              className={`${styles.link}`}
-            >
-              <Image
-                src={social.social_media_icon.url}
-                alt={social.social_media_name}
-                width="32"
-                height="32"
-              />
-            </Link>
-          );
-        })}
-    </div>
-  </div>
-  )
+    <nav className={styles.socialWrapper} aria-label="Social media">
+      {links.map(({ social_media_name: name, link, Icon, social_media_icon }) => (
+        <a
+          key={link}
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.socialLink}
+          aria-label={`${name} (opens in a new tab)`}
+        >
+          {Icon ? (
+            <Icon aria-hidden="true" fontSize="small" />
+          ) : social_media_icon?.url ? (
+            <Image src={social_media_icon.url} alt="" width={20} height={20} />
+          ) : null}
+          <span>{name}</span>
+        </a>
+      ))}
+    </nav>
+  );
 }

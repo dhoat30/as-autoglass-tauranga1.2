@@ -22,15 +22,21 @@
   }
 }
 
-.map :global(.leaflet-tile-pane) {
+.cartoTiles :global(.leaflet-tile-pane) {
   filter: brightness(1.42) saturate(0.78) contrast(0.9);
+}
+
+.osmTiles :global(.leaflet-tile-pane) {
+  // Recolor only the basemap; markers, labels and controls keep their colors.
+  filter: grayscale(1) invert(1) sepia(0.25) hue-rotate(85deg)
+    saturate(0.65) brightness(0.85) contrast(0.9);
 }
 
 .mapLabel {
   position: absolute;
   z-index: 500;
   top: 18px;
-  left: 18px;
+  left: 58px;
   display: flex;
   align-items: center;
   gap: 9px;

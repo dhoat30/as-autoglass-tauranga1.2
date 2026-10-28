@@ -117,9 +117,7 @@ export default function Footer({
                 </div>
               )}
 
-              {socialData && socialData.length > 0 && (
-                <SocialWrapper socialData={socialData} />
-              )}
+              <SocialWrapper socialData={socialData} />
 
               {certifications && (
                 <div className="certification-wrapper">

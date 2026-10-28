@@ -35,6 +35,17 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
+## Service area map
+
+The service area map uses OpenStreetMap tiles with a dark green filter and gold
+markers by default. No API key is needed. Provider attribution stays visible.
+
+To use the original CARTO Dark Matter basemap instead, set
+`NEXT_PUBLIC_CARTO_BASEMAPS_API_KEY` to a valid [CARTO basemap key](https://www.carto.com/basemaps/apikey/)
+and rebuild/redeploy. This is a public browser key, so configure its allowed
+website origins in CARTO. Without this variable, the map uses OpenStreetMap and
+does not request unauthenticated CARTO tiles.
+
 ## Booking conversion tracking
 
 Set `GTM_ID` to your Google Tag Manager web container ID (`GTM-…`) in the
